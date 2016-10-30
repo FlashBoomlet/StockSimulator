@@ -17,3 +17,8 @@ project/plugins/project/
 .worksheet
 /.idea/
 /target/
+project/project/
+goldWraithCore/src/main/java/
+goldWraithCore/src/main/resources/
+goldWraithCore/src/main/scala-2.11/
+goldWraithCore/src/test/
