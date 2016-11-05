@@ -37,6 +37,9 @@ lazy val goldWraithCore = (project in file ("goldWraithCore"))
     "org.reactivemongo" %% "reactivemongo" % "0.11.14",
     "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
     "org.scalaj" %% "scalaj-http" % "2.3.0",
-    "org.scala-lang.modules" %% "scala-swing" % "1.0.1"
+    "org.scala-lang.modules" %% "scala-swing" % "1.0.1",
+    "org.scalanlp" %% "breeze" % "0.12",
+    "org.scalanlp" %% "breeze-natives" % "0.12",
+    "org.scalanlp" %% "breeze-viz" % "0.12"
   )
 )
