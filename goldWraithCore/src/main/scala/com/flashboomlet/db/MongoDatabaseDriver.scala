@@ -1,6 +1,6 @@
 package com.flashboomlet.db
 
-import com.flashboomlet.data.MinuteTick
+import com.flashboomlet.data.Tick
 import com.flashboomlet.db.implicits.MongoImplicits
 import com.typesafe.scalalogging.LazyLogging
 import reactivemongo.api.BSONSerializationPack.Writer
@@ -34,7 +34,7 @@ class MongoDatabaseDriver
   val db: DefaultDB = Await.result(connection.database(TheGoldWraithDatabaseString,
     FailoverStrategy.default), Duration.Inf)
 
-  val minuteTickCollection: BSONCollection = db(MinuteTickCollection)
+  val tickCollection: BSONCollection = db(TickCollection)
 
 
 
@@ -44,36 +44,36 @@ class MongoDatabaseDriver
       * @param startTime the start time or date that the user is interested
       * @return a list of the minute ticks for the given period specified
       */
-  def getMinuteTickPrices(startTime: Long, endTime: Long): List[MinuteTick] ={
-      val future: Future[List[MinuteTick]] = minuteTickCollection.find(
+  def getTickPrices(startTime: Long, endTime: Long): List[Tick] ={
+      val future: Future[List[Tick]] = tickCollection.find(
         BSONDocument(
-          MinuteTickConstants.Time -> BSONDocument(
+          TickConstants.Time -> BSONDocument(
             "$gte" -> BSONDateTime(startTime),
             "$lt" -> BSONDateTime(endTime)
           )
         )
-      ).cursor[MinuteTick]().collect[List]()
+      ).cursor[Tick]().collect[List]()
 
       Await.result(future, Duration.Inf)
   }
 
   /** Simply inserts a conversation state Model */
-  def insertMinuteTick(mt: MinuteTick): Unit = {
-    insert(mt, minuteTickCollection)
+  def insertMinuteTick(t: Tick): Unit = {
+    insert(t, tickCollection)
   }
 
   /**
     * Updates a conversation state model
     *
-    * @param mt a minute tick
+    * @param t a minute tick
     */
-  def updateConversationState(mt: MinuteTick): Unit = {
+  def updateConversationState(t: Tick): Unit = {
     val selector = BSONDocument(
-      MinuteTickConstants.Time -> mt.time,
-      MinuteTickConstants.Company -> mt.company)
-    minuteTickCollection.findAndUpdate(selector, mt).onComplete {
-      case Success(result) => logger.info("successfully updated minute tick")
-      case _ => logger.error(s"failed to update the minute state ${mt.company} for ${mt.time}")
+      TickConstants.Time -> t.time,
+      TickConstants.Company -> t.company)
+    tickCollection.findAndUpdate(selector, t).onComplete {
+      case Success(result) => logger.info("successfully updated tick")
+      case _ => logger.error(s"failed to update the state for ${t.company} at ${t.time}")
     }
   }
 
