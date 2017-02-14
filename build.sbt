@@ -40,6 +40,8 @@ lazy val goldWraithCore = (project in file ("goldWraithCore"))
     "org.scala-lang.modules" %% "scala-swing" % "1.0.1",
     "org.scalanlp" %% "breeze" % "0.12",
     "org.scalanlp" %% "breeze-natives" % "0.12",
-    "org.scalanlp" %% "breeze-viz" % "0.12"
+    "org.scalanlp" %% "breeze-viz" % "0.12",
+    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.7.4",
+    "com.github.tototoshi" %% "scala-csv" % "1.3.3"
   )
 )

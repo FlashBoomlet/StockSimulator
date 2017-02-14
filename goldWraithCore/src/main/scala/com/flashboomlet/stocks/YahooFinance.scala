@@ -24,10 +24,36 @@ class YahooFinance extends LazyLogging {
 
   private val BaseApiPath: String = "http://download.finance.yahoo.com/d/quotes.csv?"
 
+  val company = "n"
+  val symbol = "s"
+  val exchange = "x"
+  val date = "d1"
+  val time = "t1"
+  val lastTrade = "l1"
+  val open = "o"
+  val ask = "a"
+  val bid = "b"
+  val volume = "v"
+  val dayLow = "g"
+  val dayHigh = "h"
+
+
 
   def getQuote(quote: String): Unit = {
     Try {
-      val request: HttpRequest = Http(BaseApiPath + "s=" + quote + "&f=sab")
+      val request: HttpRequest = Http(BaseApiPath + "s=" + quote + "&f="
+        + company
+        + symbol
+        + exchange
+        + date
+        + time
+        + lastTrade
+        + open
+        + ask
+        + bid
+        + volume
+        + dayLow
+        + dayHigh )
       request.asString.body.toString.split(",").foreach( s => println(s) )
 
       logger.info(s"Fetched quote for: $quote\n")
@@ -42,7 +68,19 @@ class YahooFinance extends LazyLogging {
     endDate: Option[Long]): Unit = {
 
     Try {
-      val request: HttpRequest = Http(BaseApiPath + "s=" + quote + "&f=nab")
+      val request: HttpRequest = Http(BaseApiPath + "s=" + quote + "&f="
+        + company
+        + symbol
+        + exchange
+        + date
+        + time
+        + lastTrade
+        + open
+        + ask
+        + bid
+        + volume
+        + dayLow
+        + dayHigh )
       request.asString.body.toString.split(",").foreach( s => println(s) )
 
       logger.info(s"Fetched quote for: $quote\n")
