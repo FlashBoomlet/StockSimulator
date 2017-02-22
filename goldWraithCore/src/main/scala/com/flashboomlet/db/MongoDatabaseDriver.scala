@@ -1,6 +1,7 @@
 package com.flashboomlet.db
 
-import com.flashboomlet.data.Tick
+import com.flashboomlet.data.StockListing
+import com.flashboomlet.data.StockData
 import com.flashboomlet.db.implicits.MongoImplicits
 import com.typesafe.scalalogging.LazyLogging
 import reactivemongo.api.BSONSerializationPack.Writer
@@ -11,10 +12,10 @@ import reactivemongo.api.collections.bson.BSONCollection
 import reactivemongo.bson.BSONDateTime
 import reactivemongo.bson.BSONDocument
 import reactivemongo.bson.BSONObjectID
+import reactivemongo.bson.BSONString
 
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 import scala.util.Success
 
@@ -34,47 +35,252 @@ class MongoDatabaseDriver
   val db: DefaultDB = Await.result(connection.database(TheGoldWraithDatabaseString,
     FailoverStrategy.default), Duration.Inf)
 
-  val tickCollection: BSONCollection = db(TickCollection)
+  val basicIndustriesMainCollection: BSONCollection = db(BasicIndustriesMainCollection)
+
+  val capitalGoodsMainCollection: BSONCollection = db(CapitalGoodsMainCollection)
+
+  val consumerDurablesMainCollection: BSONCollection = db(ConsumerDurablesMainCollection)
+
+  val consumerNonDurablesMainCollection: BSONCollection = db(ConsumerNonDurablesMainCollection)
+
+  val consumerServicesMainCollection: BSONCollection = db(ConsumerServicesMainCollection)
+
+  val energyMainCollection: BSONCollection = db(EnergyMainCollection)
+
+  val financeMainCollection: BSONCollection = db(FinanceMainCollection)
+
+  val healthCareMainCollection: BSONCollection = db(HealthCareMainCollection)
+
+  val miscellaneousMainCollection: BSONCollection = db(MiscellaneousMainCollection)
+
+  val otherMainCollection: BSONCollection = db(OtherMainCollection)
+
+  val publicUtilitiesMainCollection: BSONCollection = db(PublicUtilitiesMainCollection)
+
+  val technologyMainCollection: BSONCollection = db(TechnologyMainCollection)
+
+  val transportationMainCollection: BSONCollection = db(TransportationMainCollection)
+
+  val usStockListingsCollection: BSONCollection = db(USStockListingsCollection)
 
 
-
-    /**
-    * Gets a conversation state given a conversation state id
+  /**
+    * Stock Selector returns a selector for complex queries to retrieve data
     *
-      * @param startTime the start time or date that the user is interested
-      * @return a list of the minute ticks for the given period specified
-      */
-  def getTickPrices(startTime: Long, endTime: Long): List[Tick] ={
-      val future: Future[List[Tick]] = tickCollection.find(
-        BSONDocument(
-          TickConstants.Time -> BSONDocument(
-            "$gte" -> BSONDateTime(startTime),
-            "$lt" -> BSONDateTime(endTime)
-          )
-        )
-      ).cursor[Tick]().collect[List]()
+    * @param startTime the start time to retrieve the data for
+    * @param endTime the end time to retrieve the data for
+    * @param symbol the symbol to retrieve data for
+    * @param exchange the echange from which to retrieve data for
+    * @return a BSONDocument selector
+    */
+  def stockSelector(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): BSONDocument = {
 
-      Await.result(future, Duration.Inf)
-  }
-
-  /** Simply inserts a conversation state Model */
-  def insertMinuteTick(t: Tick): Unit = {
-    insert(t, tickCollection)
+    BSONDocument(
+      StockDataConstants.Exchange -> BSONString(exchange),
+      StockDataConstants.Symbol -> BSONString(symbol),
+      StockDataConstants.Time -> BSONDocument(
+        "$gte" -> BSONDateTime(startTime),
+        "$lt" -> BSONDateTime(endTime)
+      )
+    )
   }
 
   /**
-    * Updates a conversation state model
+    * Get Stock Listings is a function to retrieve all of the stock listings in the us
     *
-    * @param t a minute tick
+    * @return the stock listings in the us
     */
-  def updateConversationState(t: Tick): Unit = {
+  def getUSStockListings: Set[StockListing] = {
+    val selector = BSONDocument()
+    Await.result(
+      usStockListingsCollection
+      .find(selector)
+      .cursor[StockListing]()
+      .collect[Set](),
+      Duration.Inf)
+  }
+
+  /**
+    * Updates a stock listing
+    *
+    * @param sl a stock listing
+    */
+  def updateUSStockListing(sl: StockListing): Unit = {
     val selector = BSONDocument(
-      TickConstants.Time -> t.time,
-      TickConstants.Company -> t.company)
-    tickCollection.findAndUpdate(selector, t).onComplete {
+      StockListingConstants.Symbol -> BSONString(sl.symbol),
+      StockListingConstants.Exchange -> BSONString(sl.exchange)
+    )
+    usStockListingsCollection.findAndUpdate(selector, sl).onComplete {
       case Success(result) => logger.info("successfully updated tick")
-      case _ => logger.error(s"failed to update the state for ${t.company} at ${t.time}")
+      case _ => logger.error(s"failed to update the state for ${sl.symbol} at ${sl.lastDataFetch}")
     }
+  }
+
+  /**
+    * Insert USStockLIsting is a function used to insert a stock listing if and only if it is not
+    * already present in the collection
+ *
+    * @param sl the stock listing to be inserted into the collection
+    */
+  def insertUSStockListing(sl: StockListing): Unit = {
+    if(!stockListingExists(sl.symbol, sl.exchange)){
+      insert(sl, usStockListingsCollection)
+    }
+  }
+
+  /**
+    * Get Max Key should return the max key found so far in the stock listsings database
+ *
+    * @return
+    */
+  def getMaxKey: Int = {
+    val future =  usStockListingsCollection
+    .find(BSONDocument())
+    .cursor[StockListing]()
+    .collect[List]()
+    .map( l => l.map(s => s.key).max)
+
+    Await.result(future, Duration.Inf)
+  }
+
+  /**
+    * Determines if a stock exists in the database.
+    *
+    * @param symbol The stock to be assessed for uniqueness in the database
+    * @return true if the stock exists in the USStockListingsCollection database, else false
+    */
+  def stockListingExists(symbol: String, exchange: String): Boolean = {
+    val future =  usStockListingsCollection
+      .find(BSONDocument(
+        StockListingConstants.Symbol -> BSONString(symbol),
+        StockListingConstants.Exchange -> BSONString(exchange)
+      ))
+      .cursor[BSONDocument]()
+      .collect[List]()
+      .map(list => list.nonEmpty)
+
+    Await.result(future, Duration.Inf)
+  }
+
+  /**
+    * Inserts stock data to the appropriate collection
+    *
+    * @param sd stockData to insert
+    */
+  def insertBasicIndustries(sd: StockData): Unit = {
+    insert(sd, basicIndustriesMainCollection)
+  }
+
+  /**
+    * Inserts stock data to the capitalGoodsMainCollection
+    *
+    * @param sd stockData to insert
+    */
+  def insertCapitalGoods(sd: StockData): Unit = {
+    insert(sd, capitalGoodsMainCollection)
+  }
+
+  /**
+    * Inserts stock data to the consumerDurablesMainCollection
+    *
+    * @param sd stockData to insert
+    */
+  def insertConsumerDurables(sd: StockData): Unit = {
+    insert(sd, consumerDurablesMainCollection)
+  }
+
+  /**
+    * Inserts stock data to the consumerNonDurablesMainCollection
+    *
+    * @param sd stockData to insert
+    */
+  def insertConsumerNonDurables(sd: StockData): Unit = {
+    insert(sd, consumerNonDurablesMainCollection)
+  }
+
+  /**
+    * Inserts stock data to the consumerServicesMainCollection
+    *
+    * @param sd stockData to insert
+    */
+  def insertConsumerServices(sd: StockData): Unit = {
+    insert(sd, consumerServicesMainCollection)
+  }
+
+  /**
+    * Inserts stock data to the energyMainCollection
+    *
+    * @param sd stockData to insert
+    */
+  def insertEnergy(sd: StockData): Unit = {
+    insert(sd, energyMainCollection)
+  }
+
+  /**
+    * Inserts stock data to the financeMainCollection
+    *
+    * @param sd stockData to insert
+    */
+  def insertFinance(sd: StockData): Unit = {
+    insert(sd, financeMainCollection)
+  }
+
+  /**
+    * Inserts stock data to the healthCareMainCollection
+    *
+    * @param sd stockData to insert
+    */
+  def insertHealthCare(sd: StockData): Unit = {
+    insert(sd, healthCareMainCollection)
+  }
+
+  /**
+    * Inserts stock data to the miscellaneousMainCollection
+    *
+    * @param sd stockData to insert
+    */
+  def insertMiscellaneous(sd: StockData): Unit = {
+    insert(sd, miscellaneousMainCollection)
+  }
+
+  /**
+    * Inserts stock data to the otherMainCollection
+    *
+    * @param sd stockData to insert
+    */
+  def insertOther(sd: StockData): Unit = {
+    insert(sd, otherMainCollection)
+  }
+
+  /**
+    * Inserts stock data to the publicUtilitiesMainCollection
+    *
+    * @param sd stockData to insert
+    */
+  def insertPublicUtilities(sd: StockData): Unit = {
+    insert(sd, publicUtilitiesMainCollection)
+  }
+
+  /**
+    * Inserts stock data to the technologyMainCollection
+    *
+    * @param sd stockData to insert
+    */
+  def insertTechnology(sd: StockData): Unit = {
+    insert(sd, technologyMainCollection)
+  }
+
+  /**
+    * Inserts stock data to the transportationMainCollection
+    *
+    * @param sd stockData to insert
+    */
+  def insertTransportation(sd: StockData): Unit = {
+    insert(sd, transportationMainCollection)
   }
 
   /**
@@ -89,7 +295,6 @@ class MongoDatabaseDriver
     * @return The  [[BSONObjectID]] associated with the newly created document
     */
   private def insert[T](document: T, coll: BSONCollection)(implicit writer: Writer[T]): Unit = {
-
     val futureRes = coll.insert(document)
     val res = Await.result(futureRes, Duration.Inf)
     res.errmsg match {

@@ -2,9 +2,11 @@ import sbt.Keys.javaOptions
 
 // scalastyle:off
 
-ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) }
+ivyScala := ivyScala.value map {
+  _.copy(overrideScalaVersion = true)
+}
 
-mainClass in (Compile, run) := Some("com.flashboomlet.Driver")
+mainClass in(Compile, run) := Some("com.flashboomlet.Driver")
 
 lazy val root =
   (project in file(".")).aggregate(
@@ -25,7 +27,7 @@ lazy val commonSettings = Seq(
 )
 
 
-lazy val goldWraithCore = (project in file ("goldWraithCore"))
+lazy val goldWraithCore = (project in file("goldWraithCore"))
 .settings(commonSettings: _*)
 .settings(
   name := "goldWraithCore",

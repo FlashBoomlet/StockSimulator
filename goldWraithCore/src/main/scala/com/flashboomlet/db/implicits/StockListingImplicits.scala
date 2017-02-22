@@ -3,7 +3,6 @@ package com.flashboomlet.db.implicits
 import java.util.Date
 
 import com.flashboomlet.data.StockListing
-import com.flashboomlet.data.Tick
 import com.flashboomlet.db.MongoConstants
 import reactivemongo.bson.BSONDateTime
 import reactivemongo.bson.BSONDocument
@@ -17,9 +16,10 @@ import reactivemongo.bson.BSONString
 trait StockListingImplicits extends MongoConstants {
 
   /** Implicit conversion object for Conversation State writing */
-  implicit object ConversationStateWriter extends BSONDocumentWriter[StockListing] {
+  implicit object StockListingWriter extends BSONDocumentWriter[StockListing] {
 
     override def write(sl: StockListing): BSONDocument = BSONDocument(
+      StockListingConstants.Key -> BSONInteger(sl.key),
       StockListingConstants.Symbol -> BSONString(sl.symbol),
       StockListingConstants.Name -> BSONString(sl.name),
       StockListingConstants.LastSale -> BSONLong(sl.lastSale),
@@ -29,15 +29,17 @@ trait StockListingImplicits extends MongoConstants {
       StockListingConstants.Industry -> BSONString(sl.industry),
       StockListingConstants.SummaryQuote -> BSONString(sl.summaryQuote),
       StockListingConstants.Exchange -> BSONString(sl.exchange),
-      StockListingConstants.LastUpdate -> BSONDateTime(sl.lastUpdate)
+      StockListingConstants.LastUpdate -> BSONDateTime(sl.lastUpdate),
+      StockListingConstants.LastDataFetch -> BSONDateTime(sl.lastDataFetch)
     )
   }
 
 
   /** Implicit conversion object for reading Conversation State class */
-  implicit object ConversationStateReader extends BSONDocumentReader[StockListing] {
+  implicit object StockListingReader extends BSONDocumentReader[StockListing] {
 
     override def read(doc: BSONDocument): StockListing = {
+      val key = doc.getAs[Int](StockListingConstants.Key).get
       val symbol = doc.getAs[String](StockListingConstants.Symbol).get
       val name = doc.getAs[String](StockListingConstants.Name).get
       val lastSale = doc.getAs[Long](StockListingConstants.LastSale).get
@@ -48,8 +50,10 @@ trait StockListingImplicits extends MongoConstants {
       val summaryQuote = doc.getAs[String](StockListingConstants.SummaryQuote).get
       val exchange = doc.getAs[String](StockListingConstants.Exchange).get
       val lastUpdate = doc.getAs[Date](StockListingConstants.LastUpdate).get.getTime
+      val lastDataFetch = doc.getAs[Date](StockListingConstants.LastDataFetch).get.getTime
 
       StockListing(
+        key = key,
         symbol = symbol,
         name = name,
         lastSale = lastSale,
@@ -59,7 +63,8 @@ trait StockListingImplicits extends MongoConstants {
         industry = industry,
         summaryQuote = summaryQuote,
         exchange = exchange,
-        lastUpdate = lastUpdate
+        lastUpdate = lastUpdate,
+        lastDataFetch = lastDataFetch
       )
     }
   }
