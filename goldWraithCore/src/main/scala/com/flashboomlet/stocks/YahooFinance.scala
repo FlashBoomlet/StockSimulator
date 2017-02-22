@@ -1,5 +1,8 @@
 package com.flashboomlet.stocks
 
+import com.flashboomlet.data.DateUtil
+import com.flashboomlet.data.StockData
+import com.flashboomlet.data.StockData
 import com.typesafe.scalalogging.LazyLogging
 import scala.util.Try
 import scalaj.http.Http
@@ -39,7 +42,7 @@ class YahooFinance extends LazyLogging {
 
 
 
-  def getQuote(quote: String): Unit = {
+  def getQuote(quote: String, key: Int): StockData = {
     Try {
       val request: HttpRequest = Http(BaseApiPath + "s=" + quote + "&f="
         + company
@@ -54,12 +57,15 @@ class YahooFinance extends LazyLogging {
         + volume
         + dayLow
         + dayHigh )
-      request.asString.body.toString.split(",").foreach( s => println(s) )
+      val data = request.asString.body.toString.split(",").toList
 
-      logger.info(s"Fetched quote for: $quote\n")
-    }.getOrElse(
-      logger.info(s"Failed to get quote for $quote\n")
-    )
+      logger.info(s"Yahoo fetched quote for: $quote\n")
+      toStockData(data, key)
+
+    }.getOrElse {
+      logger.info(s"Yahoo failed to get quote for $quote\n")
+      nullStockData
+    }
   }
 
   def getHistory(
@@ -87,6 +93,30 @@ class YahooFinance extends LazyLogging {
     }.getOrElse(
       logger.info(s"Failed to get quote for $quote\n")
     )
+  }
+
+  private def toStockData(data: List[String], key: Int): StockData = {
+    val now = DateUtil.getNowInMillis
+    StockData(
+      key,
+      data.head,
+      data(1),
+      data(2),
+      data(3).toLong + data(4).toLong, // TODO: Convert Date and Time to a long
+      data(5).toLong,
+      data(6).toLong,
+      data(7).toLong,
+      data(8).toLong,
+      data(9).toLong,
+      data(10).toLong,
+      data(11).toLong,
+      "yahoo",
+      now
+    )
+  }
+
+  private def nullStockData: StockData = {
+    StockData(-1, "","","", -1, -1, -1, -1, -1, -1, -1, -1, "", -1)
   }
 
 }

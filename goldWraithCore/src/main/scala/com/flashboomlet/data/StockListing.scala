@@ -14,14 +14,16 @@ package com.flashboomlet.data
   * @param exchange the exchange that the stock is in
   */
 case class StockListing (
-  val symbol: String,
-  val name: String,
-  val lastSale: Long,
-  val marketCap: Long,
-  val ipoYear: Int,
-  val sector: String,
-  val industry: String,
-  val summaryQuote: String,
-  val exchange: String,
-  val lastUpdate: Long
+  key: Int,
+  symbol: String,
+  name: String,
+  lastSale: Long,
+  marketCap: Long,
+  ipoYear: Int,
+  sector: String,
+  industry: String,
+  summaryQuote: String,
+  exchange: String,
+  lastUpdate: Long,
+  lastDataFetch: Long
 )

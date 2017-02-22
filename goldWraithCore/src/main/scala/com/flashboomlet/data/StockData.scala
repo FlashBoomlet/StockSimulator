@@ -18,7 +18,8 @@ package com.flashboomlet.data
   * @param source the source that the data came from
   * @param fetchDate the date that the data was fetched on
   */
-case class Tick(
+case class StockData(
+  key: Int,
   company: String,
   symbol: String,
   exchange: String,
