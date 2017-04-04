@@ -88,6 +88,9 @@ trait MongoConstants {
 
   }
 
+  /**
+    * String constants used in the conversation state collection model schema
+    */
   object StockListingConstants {
 
     /* String constant for the `key` field in a MongoDB StockListing document */
@@ -126,6 +129,69 @@ trait MongoConstants {
     final val LastDataFetch = "lastdatafetch"
 
   }
+
+  /**
+    * String constants used in the conversation state collection model schema
+    */
+  object PredictionDataConstants {
+    /* String constant for the `transactionId` field in a MongoDB PredictionData document */
+    final val TransactionId = "transactionid"
+
+    /* String constant for the `contractType` field in a MongoDB PredictionData document */
+    final val ContractType = "contracttype"
+
+    /* String constant for the `safetyLevel` field in a MongoDB PredictionData document */
+    final val SafetyLevel = "safetylevel"
+
+    /* String constant for the `predictedPrice` field in a MongoDB PredictionData document */
+    final val PredictedPrice = "predictedprice"
+
+    /* String constant for the `predictedSellDate` field in a MongoDB PredictionData document */
+    final val PredictedSellDate = "predicteddelldate"
+
+    /* String constant for the `predictedProfit` field in a MongoDB PredictionData document */
+    final val PredictedProfit = "predictedprofit"
+
+    /* String constant for the `strategy` field in a MongoDB PredictionData document */
+    final val Strategy = "strategy"
+  }
+
+
+  object PortfolioDataConstants {
+    /* String constant for the `uid` field in a MongoDB PortfolioData document */
+    final val Uid = "uid"
+
+    /* String constant for the `transactionId` field in a MongoDB PortfolioData document */
+    final val TransactionId = "transactionId"
+
+    /* String constant for the `market` field in a MongoDB PortfolioData document */
+    final val Market = "market"
+
+    /* String constant for the `symbol` field in a MongoDB PortfolioData document */
+    final val Symbol = "symbol"
+
+    /* String constant for the `units` field in a MongoDB PortfolioData document */
+    final val Units = "units"
+
+    /* String constant for the `purchaseDate` field in a MongoDB PortfolioData document */
+    final val PurchaseDate = "purchaseDate"
+
+    /* String constant for the `purchasePrice` field in a MongoDB PortfolioData document */
+    final val PurchasePrice = "purchasePrice"
+
+    /* String constant for the `sellDate` field in a MongoDB PortfolioData document */
+    final val SellDate = "sellDate"
+
+    /* String constant for the `sellPrice` field in a MongoDB PortfolioData document */
+    final val SellPrice = "sellPrice"
+
+    /* String constant for the `contractType` field in a MongoDB PortfolioData document */
+    final val ContractType = "contractType"
+
+    /* String constant for the `contractEndDate` field in a MongoDB PortfolioData document */
+    final val ContractEndDate = "contractEndDate"
+  }
+
 
   /**
     * String constants used across the entirity of the MongoDB database

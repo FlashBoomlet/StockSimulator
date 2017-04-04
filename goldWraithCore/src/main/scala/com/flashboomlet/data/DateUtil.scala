@@ -12,55 +12,79 @@ import java.util.TimeZone
   */
 object DateUtil {
 
-  /*
-
-    d - Numeric day of the month without a leading zero.
-    dd - Numeric day of the month with a leading zero.
-    ddd - Abbreviated name of the day of the week.
-    dddd - Full name of the day of the week.
-
-    M - Numeric month with no leading zero.
-    MM - Numeric month with a leading zero.
-    MMM - Abbreviated name of month.
-    MMMM - Full month name.
-
-    y - Year with out century and leading zero.
-    yy - Year with out century, with leading zero.
-    yyyy - Year with century.
-
-
-    h - 12 Hour clock, no leading zero.
-    hh - 12 Hour clock with leading zero.
-    H - 24 Hour clock, no leading zero.
-    HH - 24 Hour clock with leading zero.
-
-    m - Minutes with no leading zero.
-    mm - Minutes with leading zero.
-
-    s - Seconds with no leading zero.
-    ss - Seconds with leading zero.
-
-    t - AM/PM but only the first letter.
-    tt - AM/PM ( a.m. / p.m.)
-
-    zz - Time zone off set with +/-
-   */
   val calendar = new GregorianCalendar()
+
+  /**
+    * date to Year takes a milliseconds formatted dateTime and gets the year
+    *
+    * @param datetime a milliseconds formatted dateTime
+    * @return the year in the time
+    */
   def dateToYear(datetime: Long): Int = {
     calendar.setTime(new Date(datetime))
     calendar.get(Calendar.YEAR)
   }
 
+  /**
+    * date to Year takes a milliseconds formatted dateTime and gets the Month
+    *
+    * @param datetime a milliseconds formatted dateTime
+    * @return the Month in the time
+    */
   def dateToMonth(datetime: Long): Int = {
     calendar.setTime(new Date(datetime))
     calendar.get(Calendar.MONTH) + 1
   }
 
+  /**
+    * date to Year takes a milliseconds formatted dateTime and gets the Day
+    *
+    * @param datetime a milliseconds formatted dateTime
+    * @return the day in the time
+    */
   def dateToDay(datetime: Long): Int = {
     calendar.setTime(new Date(datetime))
     calendar.get(Calendar.DAY_OF_MONTH)
   }
 
+  /**
+    * Date and Time to Time combines a seperate data and time and then converts it into
+    * one milliseconds formatted time.
+    *
+    * @param date a date string in the format of "12-12-1234"
+    * @param time a time string in the format of "12:34.56 PM"
+    * @return a milliseconds formatted time
+    */
+  def dateandTimetoTime(date: String, time: String): Long = {
+    val rawDate = date.split('-')
+    val subTime = time.split(':')
+    val rawTime = rawDate.flatMap(s => s.split('.')).flatMap(s => s.split(' '))
+
+    val pm = if(rawTime(3) == "PM" ) { 2 } else { 1 }
+
+    formattedTimeToMillis(
+      rawDate(2).toInt,
+      rawDate(1).toInt,
+      rawDate.head.toInt,
+      rawTime.head.toInt,
+      rawTime(1).toInt,
+      rawTime(2).toInt,
+      pm
+    )
+  }
+
+  /**
+    * Formatted Time to Mills converts seperate data and time components and returns
+    *
+    * @param year the year that you wish to use
+    * @param month the month that you wish to use
+    * @param day the day that you wish to use
+    * @param hour the hour that you wish to use
+    * @param minutes the amount of minutes that you with to use
+    * @param seconds the amount of seconds that you wish to use
+    * @param pm a flag for weather to multiply the hours variable. (1=AM, 2=PM)
+    * @return a milliseconds formatted time
+    */
   def formattedTimeToMillis(
     year: Int,
     month: Int,
@@ -78,10 +102,22 @@ object DateUtil {
     left + (hour * 3600000) + (pm * 43200000) + (minutes * 60000) + (seconds * 1000)
   }
 
+  /**
+    * get FormattedTime in Millis takes a preformatted Time and converts it to the time in
+    * milliseconds
+    *
+    * @param formattedTime a formatted time (String)
+    * @return a milliseconds formatted time
+    */
   def getFormattedTimeInMillis(formattedTime: String): Long = {
     val format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'", Locale.ENGLISH)
     format.parse(formattedTime).getTime - 21600000// subtract from GMT to local
   }
 
+  /**
+    * Get Now in Millis gets the current time in Milliseconds
+    *
+    * @return the current milliseconds formatted time
+    */
   def getNowInMillis: Long = new Date().getTime
 }

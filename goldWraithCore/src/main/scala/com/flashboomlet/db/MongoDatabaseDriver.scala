@@ -171,8 +171,32 @@ class MongoDatabaseDriver
     *
     * @param sd stockData to insert
     */
-  def insertBasicIndustries(sd: StockData): Unit = {
+  def insertBasicIndustriesMain(sd: StockData): Unit = {
     insert(sd, basicIndustriesMainCollection)
+  }
+
+  /**
+    * Get BasicIndustries Main retrieves data for the main BasicIndustries collection
+    *
+    * @param startTime the time from which to begin the results
+    * @param endTime the end time from which to end the results
+    * @param symbol the symbol for which to gather data
+    * @param exchange the exchange for which the symbol belongs to
+    * @return a list of stock data (order does matter)
+    */
+  def getBasicIndustriesMain(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): List[StockData] =  {
+
+    val selector = stockSelector(startTime, endTime, symbol, exchange)
+    Await.result(
+      basicIndustriesMainCollection
+      .find(selector)
+      .cursor[StockData]()
+      .collect[List](),
+      Duration.Inf)
   }
 
   /**
@@ -180,8 +204,32 @@ class MongoDatabaseDriver
     *
     * @param sd stockData to insert
     */
-  def insertCapitalGoods(sd: StockData): Unit = {
+  def insertCapitalGoodsMain(sd: StockData): Unit = {
     insert(sd, capitalGoodsMainCollection)
+  }
+
+  /**
+    * Get CapitalGoods Main retrieves data for the main CapitalGoods collection
+    *
+    * @param startTime the time from which to begin the results
+    * @param endTime the end time from which to end the results
+    * @param symbol the symbol for which to gather data
+    * @param exchange the exchange for which the symbol belongs to
+    * @return a list of stock data (order does matter)
+    */
+  def getCapitalGoodsMain(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): List[StockData] =  {
+
+    val selector = stockSelector(startTime, endTime, symbol, exchange)
+    Await.result(
+      capitalGoodsMainCollection
+      .find(selector)
+      .cursor[StockData]()
+      .collect[List](),
+      Duration.Inf)
   }
 
   /**
@@ -189,8 +237,32 @@ class MongoDatabaseDriver
     *
     * @param sd stockData to insert
     */
-  def insertConsumerDurables(sd: StockData): Unit = {
+  def insertConsumerDurablesMain(sd: StockData): Unit = {
     insert(sd, consumerDurablesMainCollection)
+  }
+
+  /**
+    * Get ConsumerDurables Main retrieves data for the main ConsumerDurables collection
+    *
+    * @param startTime the time from which to begin the results
+    * @param endTime the end time from which to end the results
+    * @param symbol the symbol for which to gather data
+    * @param exchange the exchange for which the symbol belongs to
+    * @return a list of stock data (order does matter)
+    */
+  def getConsumerDurablesMain(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): List[StockData] =  {
+
+    val selector = stockSelector(startTime, endTime, symbol, exchange)
+    Await.result(
+      consumerDurablesMainCollection
+      .find(selector)
+      .cursor[StockData]()
+      .collect[List](),
+      Duration.Inf)
   }
 
   /**
@@ -198,8 +270,32 @@ class MongoDatabaseDriver
     *
     * @param sd stockData to insert
     */
-  def insertConsumerNonDurables(sd: StockData): Unit = {
+  def insertConsumerNonDurablesMain(sd: StockData): Unit = {
     insert(sd, consumerNonDurablesMainCollection)
+  }
+
+  /**
+    * Get ConsumerNonDurables Main retrieves data for the main ConsumerNonDurables collection
+    *
+    * @param startTime the time from which to begin the results
+    * @param endTime the end time from which to end the results
+    * @param symbol the symbol for which to gather data
+    * @param exchange the exchange for which the symbol belongs to
+    * @return a list of stock data (order does matter)
+    */
+  def getConsumerNonDurablesMain(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): List[StockData] =  {
+
+    val selector = stockSelector(startTime, endTime, symbol, exchange)
+    Await.result(
+      consumerNonDurablesMainCollection
+      .find(selector)
+      .cursor[StockData]()
+      .collect[List](),
+      Duration.Inf)
   }
 
   /**
@@ -207,8 +303,32 @@ class MongoDatabaseDriver
     *
     * @param sd stockData to insert
     */
-  def insertConsumerServices(sd: StockData): Unit = {
+  def insertConsumerServicesMain(sd: StockData): Unit = {
     insert(sd, consumerServicesMainCollection)
+  }
+
+  /**
+    * Get ConsumerServices Main retrieves data for the main ConsumerServices collection
+    *
+    * @param startTime the time from which to begin the results
+    * @param endTime the end time from which to end the results
+    * @param symbol the symbol for which to gather data
+    * @param exchange the exchange for which the symbol belongs to
+    * @return a list of stock data (order does matter)
+    */
+  def getConsumerServicesMain(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): List[StockData] =  {
+
+    val selector = stockSelector(startTime, endTime, symbol, exchange)
+    Await.result(
+      consumerServicesMainCollection
+      .find(selector)
+      .cursor[StockData]()
+      .collect[List](),
+      Duration.Inf)
   }
 
   /**
@@ -216,8 +336,32 @@ class MongoDatabaseDriver
     *
     * @param sd stockData to insert
     */
-  def insertEnergy(sd: StockData): Unit = {
+  def insertEnergyMain(sd: StockData): Unit = {
     insert(sd, energyMainCollection)
+  }
+
+  /**
+    * Get Energy Main retrieves data for the main Energy collection
+    *
+    * @param startTime the time from which to begin the results
+    * @param endTime the end time from which to end the results
+    * @param symbol the symbol for which to gather data
+    * @param exchange the exchange for which the symbol belongs to
+    * @return a list of stock data (order does matter)
+    */
+  def getEnergyMain(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): List[StockData] =  {
+
+    val selector = stockSelector(startTime, endTime, symbol, exchange)
+    Await.result(
+      energyMainCollection
+      .find(selector)
+      .cursor[StockData]()
+      .collect[List](),
+      Duration.Inf)
   }
 
   /**
@@ -225,8 +369,32 @@ class MongoDatabaseDriver
     *
     * @param sd stockData to insert
     */
-  def insertFinance(sd: StockData): Unit = {
+  def insertFinanceMain(sd: StockData): Unit = {
     insert(sd, financeMainCollection)
+  }
+
+  /**
+    * Get Finance Main retrieves data for the main Finance collection
+    *
+    * @param startTime the time from which to begin the results
+    * @param endTime the end time from which to end the results
+    * @param symbol the symbol for which to gather data
+    * @param exchange the exchange for which the symbol belongs to
+    * @return a list of stock data (order does matter)
+    */
+  def getFinanceMain(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): List[StockData] =  {
+
+    val selector = stockSelector(startTime, endTime, symbol, exchange)
+    Await.result(
+      financeMainCollection
+      .find(selector)
+      .cursor[StockData]()
+      .collect[List](),
+      Duration.Inf)
   }
 
   /**
@@ -234,8 +402,32 @@ class MongoDatabaseDriver
     *
     * @param sd stockData to insert
     */
-  def insertHealthCare(sd: StockData): Unit = {
+  def insertHealthCareMain(sd: StockData): Unit = {
     insert(sd, healthCareMainCollection)
+  }
+
+  /**
+    * Get HealthCare Main retrieves data for the main HealthCare collection
+    *
+    * @param startTime the time from which to begin the results
+    * @param endTime the end time from which to end the results
+    * @param symbol the symbol for which to gather data
+    * @param exchange the exchange for which the symbol belongs to
+    * @return a list of stock data (order does matter)
+    */
+  def getHealthCareMain(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): List[StockData] =  {
+
+    val selector = stockSelector(startTime, endTime, symbol, exchange)
+    Await.result(
+      healthCareMainCollection
+      .find(selector)
+      .cursor[StockData]()
+      .collect[List](),
+      Duration.Inf)
   }
 
   /**
@@ -243,8 +435,32 @@ class MongoDatabaseDriver
     *
     * @param sd stockData to insert
     */
-  def insertMiscellaneous(sd: StockData): Unit = {
+  def insertMiscellaneousMain(sd: StockData): Unit = {
     insert(sd, miscellaneousMainCollection)
+  }
+
+  /**
+    * Get Miscellaneous Main retrieves data for the main Miscellaneous collection
+    *
+    * @param startTime the time from which to begin the results
+    * @param endTime the end time from which to end the results
+    * @param symbol the symbol for which to gather data
+    * @param exchange the exchange for which the symbol belongs to
+    * @return a list of stock data (order does matter)
+    */
+  def getMiscellaneousMain(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): List[StockData] =  {
+
+    val selector = stockSelector(startTime, endTime, symbol, exchange)
+    Await.result(
+      miscellaneousMainCollection
+      .find(selector)
+      .cursor[StockData]()
+      .collect[List](),
+      Duration.Inf)
   }
 
   /**
@@ -252,17 +468,65 @@ class MongoDatabaseDriver
     *
     * @param sd stockData to insert
     */
-  def insertOther(sd: StockData): Unit = {
+  def insertOtherMain(sd: StockData): Unit = {
     insert(sd, otherMainCollection)
   }
 
   /**
+    * Get Other Main retrieves data for the main Other collection
+    *
+    * @param startTime the time from which to begin the results
+    * @param endTime the end time from which to end the results
+    * @param symbol the symbol for which to gather data
+    * @param exchange the exchange for which the symbol belongs to
+    * @return a list of stock data (order does matter)
+    */
+  def getOtherMain(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): List[StockData] =  {
+
+    val selector = stockSelector(startTime, endTime, symbol, exchange)
+    Await.result(
+      otherMainCollection
+      .find(selector)
+      .cursor[StockData]()
+      .collect[List](),
+      Duration.Inf)
+  }
+
+    /**
     * Inserts stock data to the publicUtilitiesMainCollection
     *
     * @param sd stockData to insert
     */
-  def insertPublicUtilities(sd: StockData): Unit = {
+  def insertPublicUtilitiesMain(sd: StockData): Unit = {
     insert(sd, publicUtilitiesMainCollection)
+  }
+
+  /**
+    * Get PublicUtilities Main retrieves data for the main PublicUtilities collection
+    *
+    * @param startTime the time from which to begin the results
+    * @param endTime the end time from which to end the results
+    * @param symbol the symbol for which to gather data
+    * @param exchange the exchange for which the symbol belongs to
+    * @return a list of stock data (order does matter)
+    */
+  def getPublicUtilitiesMain(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): List[StockData] =  {
+
+    val selector = stockSelector(startTime, endTime, symbol, exchange)
+    Await.result(
+      publicUtilitiesMainCollection
+      .find(selector)
+      .cursor[StockData]()
+      .collect[List](),
+      Duration.Inf)
   }
 
   /**
@@ -270,8 +534,32 @@ class MongoDatabaseDriver
     *
     * @param sd stockData to insert
     */
-  def insertTechnology(sd: StockData): Unit = {
+  def insertTechnologyMain(sd: StockData): Unit = {
     insert(sd, technologyMainCollection)
+  }
+
+  /**
+    * Get Technology Main retrieves data for the main Technology collection
+    *
+    * @param startTime the time from which to begin the results
+    * @param endTime the end time from which to end the results
+    * @param symbol the symbol for which to gather data
+    * @param exchange the exchange for which the symbol belongs to
+    * @return a list of stock data (order does matter)
+    */
+  def getTechnologyMain(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): List[StockData] =  {
+
+    val selector = stockSelector(startTime, endTime, symbol, exchange)
+    Await.result(
+      technologyMainCollection
+      .find(selector)
+      .cursor[StockData]()
+      .collect[List](),
+      Duration.Inf)
   }
 
   /**
@@ -279,8 +567,32 @@ class MongoDatabaseDriver
     *
     * @param sd stockData to insert
     */
-  def insertTransportation(sd: StockData): Unit = {
+  def insertTransportationMain(sd: StockData): Unit = {
     insert(sd, transportationMainCollection)
+  }
+
+  /**
+    * Get Transportation Main retrieves data for the main transportation collection
+    *
+    * @param startTime the time from which to begin the results
+    * @param endTime the end time from which to end the results
+    * @param symbol the symbol for which to gather data
+    * @param exchange the exchange for which the symbol belongs to
+    * @return a list of stock data (order does matter)
+    */
+  def getTransportationMain(
+    startTime: Long,
+    endTime: Long,
+    symbol: String,
+    exchange: String): List[StockData] =  {
+
+    val selector = stockSelector(startTime, endTime, symbol, exchange)
+    Await.result(
+      transportationMainCollection
+      .find(selector)
+      .cursor[StockData]()
+      .collect[List](),
+      Duration.Inf)
   }
 
   /**

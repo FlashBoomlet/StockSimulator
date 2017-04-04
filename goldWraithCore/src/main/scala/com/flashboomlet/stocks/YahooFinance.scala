@@ -4,6 +4,7 @@ import com.flashboomlet.data.DateUtil
 import com.flashboomlet.data.StockData
 import com.flashboomlet.data.StockData
 import com.typesafe.scalalogging.LazyLogging
+import org.jfree.data.DataUtilities
 import scala.util.Try
 import scalaj.http.Http
 import scalaj.http.HttpRequest
@@ -102,7 +103,7 @@ class YahooFinance extends LazyLogging {
       data.head,
       data(1),
       data(2),
-      data(3).toLong + data(4).toLong, // TODO: Convert Date and Time to a long
+      DateUtil.dateandTimetoTime(data(3), data(4)),
       data(5).toLong,
       data(6).toLong,
       data(7).toLong,
