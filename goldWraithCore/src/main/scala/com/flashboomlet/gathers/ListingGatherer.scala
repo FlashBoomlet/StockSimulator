@@ -89,7 +89,7 @@ class ListingGatherer(implicit val db: MongoDatabaseDriver) {
     * @return the max key thus far plus one.
     */
   private def getNextKey(): Int = {
-    val maxKey = db.getMaxKey()
+    val maxKey = db.getMaxKey
     if(maxKey < 1){
       // Use the StockListing Object as is
       1

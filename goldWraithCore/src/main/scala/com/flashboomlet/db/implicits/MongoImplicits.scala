@@ -6,3 +6,5 @@ package com.flashboomlet.db.implicits
 trait MongoImplicits
 extends StockDataImplicits
 with StockListingImplicits
+with PredictionDataImplicits
+with PortfolioDataImplicits
