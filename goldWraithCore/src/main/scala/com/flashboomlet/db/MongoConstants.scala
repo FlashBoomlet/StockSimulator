@@ -164,25 +164,7 @@ trait MongoConstants {
     /* String constant for the `transactionId` field in a MongoDB PortfolioData document */
     final val TransactionId = "transactionId"
 
-    /* String constant for the `market` field in a MongoDB PortfolioData document */
-    final val Market = "market"
-
-    /* String constant for the `symbol` field in a MongoDB PortfolioData document */
-    final val Symbol = "symbol"
-
-    /* String constant for the `units` field in a MongoDB PortfolioData document */
-    final val Units = "units"
-
-    /* String constant for the `purchaseDate` field in a MongoDB PortfolioData document */
-    final val PurchaseDate = "purchaseDate"
-
-    /* String constant for the `purchasePrice` field in a MongoDB PortfolioData document */
-    final val PurchasePrice = "purchasePrice"
-
-    /* String constant for the `sellDate` field in a MongoDB PortfolioData document */
-    final val SellDate = "sellDate"
-
-    /* String constant for the `sellPrice` field in a MongoDB PortfolioData document */
+    /* String constant for the `market` fi
     final val SellPrice = "sellPrice"
 
     /* String constant for the `contractType` field in a MongoDB PortfolioData document */
@@ -207,3 +189,22 @@ trait MongoConstants {
   }
 
 }
+eld in a MongoDB PortfolioData document */
+final val Market = "market"
+
+/* String constant for the `symbol` field in a MongoDB PortfolioData document */
+final val Symbol = "symbol"
+
+/* String constant for the `units` field in a MongoDB PortfolioData document */
+final val Units = "units"
+
+/* String constant for the `purchaseDate` field in a MongoDB PortfolioData document */
+final val PurchaseDate = "purchaseDate"
+
+/* String constant for the `purchasePrice` field in a MongoDB PortfolioData document */
+final val PurchasePrice = "purchasePrice"
+
+/* String constant for the `sellDate` field in a MongoDB PortfolioData document */
+final val SellDate = "sellDate"
+
+/* String constant for the `sellPrice` field in a MongoDB PortfolioData document */

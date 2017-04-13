@@ -600,7 +600,7 @@ class MongoDatabaseDriver
     * collection and then returns the new BSONObjectID associated with the
     * newly inserted document.
     *
-    * @param document Class of type T to be inserted as a [[BSONDocument]]
+    * @param document Class of type T to be  inserted as a [[BSONDocument]]
     * @param coll Collection to insert the [[BSONDocument]] into
     * @param writer Implicit writer associated with the Object of type T
     * @tparam T Type of the object to be inserted
