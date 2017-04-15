@@ -37,6 +37,9 @@ trait MongoConstants {
 
   final val USStockListingsCollection = "usListingsCollection"
 
+  final val PredictionDataCollection = "predictionDataCollection"
+  final val PortfolioDataCollection = "portfolioDataCollection"
+
 
   /**
     * String constants used in the conversation state collection model schema
