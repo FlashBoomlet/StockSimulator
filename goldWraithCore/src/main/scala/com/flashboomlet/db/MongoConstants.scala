@@ -13,7 +13,7 @@ trait MongoConstants {
   // DATABASE CONFIGURATION VALUES //
 
   /* String constant for connecting to MongoDB */
-  final val DatabaseIp = "localhost"
+  final val LocalHostString = "localhost"
 
   /* String constant for the database name */
   final val TheGoldWraithDatabaseString = "goldWraith"
@@ -131,6 +131,8 @@ trait MongoConstants {
 
     final val LastDataFetch = "lastdatafetch"
 
+    final val Valid = "valid"
+
   }
 
   /**
@@ -159,7 +161,6 @@ trait MongoConstants {
     final val Strategy = "strategy"
   }
 
-
   object PortfolioDataConstants {
     /* String constant for the `uid` field in a MongoDB PortfolioData document */
     final val Uid = "uid"
@@ -167,7 +168,25 @@ trait MongoConstants {
     /* String constant for the `transactionId` field in a MongoDB PortfolioData document */
     final val TransactionId = "transactionId"
 
-    /* String constant for the `market` fi
+    /* String constant for the `market` field in a MongoDB PortfolioData document */
+    final val Market = "market"
+
+    /* String constant for the `symbol` field in a MongoDB PortfolioData document */
+    final val Symbol = "symbol"
+
+    /* String constant for the `units` field in a MongoDB PortfolioData document */
+    final val Units = "units"
+
+    /* String constant for the `purchaseDate` field in a MongoDB PortfolioData document */
+    final val PurchaseDate = "purchaseDate"
+
+    /* String constant for the `purchasePrice` field in a MongoDB PortfolioData document */
+    final val PurchasePrice = "purchasePrice"
+
+    /* String constant for the `sellDate` field in a MongoDB PortfolioData document */
+    final val SellDate = "sellDate"
+
+    /* String constant for the `sellPrice` field in a MongoDB PortfolioData document */
     final val SellPrice = "sellPrice"
 
     /* String constant for the `contractType` field in a MongoDB PortfolioData document */
@@ -183,6 +202,9 @@ trait MongoConstants {
     */
   object GlobalConstants {
 
+    /* String constant for the `meta_data` field in a MongoDB document */
+    final val MetaDataString = "meta_data"
+
     /* String constant for the `_id` field in a MongoDB document */
     final val IdString = "_id"
 
@@ -192,22 +214,3 @@ trait MongoConstants {
   }
 
 }
-eld in a MongoDB PortfolioData document */
-final val Market = "market"
-
-/* String constant for the `symbol` field in a MongoDB PortfolioData document */
-final val Symbol = "symbol"
-
-/* String constant for the `units` field in a MongoDB PortfolioData document */
-final val Units = "units"
-
-/* String constant for the `purchaseDate` field in a MongoDB PortfolioData document */
-final val PurchaseDate = "purchaseDate"
-
-/* String constant for the `purchasePrice` field in a MongoDB PortfolioData document */
-final val PurchasePrice = "purchasePrice"
-
-/* String constant for the `sellDate` field in a MongoDB PortfolioData document */
-final val SellDate = "sellDate"
-
-/* String constant for the `sellPrice` field in a MongoDB PortfolioData document */

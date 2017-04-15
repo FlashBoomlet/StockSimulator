@@ -1,5 +1,7 @@
 package com.flashboomlet.actors
 
+import com.flashboomlet.data.DateUtil
+
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.duration.MILLISECONDS
 import scala.concurrent.duration.SECONDS
@@ -14,11 +16,30 @@ object AkkaConstants {
   /** String constant for the tick message */
   val Tick = "tick"
 
+
+  // Calculate delay to occur on an exact hour. (4:30 pm EST) Stock Hours Are 9:30-4pm ET
+  val du = new DateUtil()
+  val cur = du.getNowInMillis
+  val desiredTime = du.formattedTimeToMillis(
+    du.dateToYear(cur),
+    du.dateToMonth(cur),
+    du.dateToDay(cur),
+    4,
+    30,
+    0,
+    1
+  )
+
   /** Initial delay for scheduling actors, in milliseconds */
-  private[this] val InitialMilliseconds = 5000
+  private[this] val InitialMilliseconds = if(desiredTime-cur > 0){
+    0 // TODO: desiredTime-cur
+  } else 0
+
 
   /** Length between schedule ticks for a Yahoo Finance actor, in milliseconds */
-  private[this] val YahooFinanceSeconds = 80
+  // 24 Hours: 86400000 (milliseconds)
+  private[this] val YahooFinanceSeconds = 86400000
+
 
   // FINITE DURATIONS //
 

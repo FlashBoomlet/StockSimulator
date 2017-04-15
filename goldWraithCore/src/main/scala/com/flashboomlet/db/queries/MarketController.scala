@@ -6,6 +6,8 @@ import com.flashboomlet.db.MongoDatabaseDriver
 import com.flashboomlet.db.implicits.MongoImplicits
 import com.typesafe.scalalogging.LazyLogging
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 /**
   * Created by ttlynch on 4/4/17.
   */
@@ -71,7 +73,7 @@ class MarketController
 
   def aggregateGetters(start: Long, end: Long): List[List[StockData]] = {
     // Get list of stock listings
-    val stocks = databaseDriver.getUSStockListings
+    val stocks = databaseDriver.getUSStockListings.filter(sl => sl.valid)
     // Iterate through the stock listings, get updated data and insert
     stocks.map( s =>
        getData(s.sector, start, end, s.symbol, s.exchange)

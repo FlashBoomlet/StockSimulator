@@ -10,7 +10,7 @@ import java.util.TimeZone
 /**
   * Created by ttlynch on 2/12/17.
   */
-object DateUtil {
+class DateUtil {
 
   val calendar = new GregorianCalendar()
 
@@ -120,4 +120,10 @@ object DateUtil {
     * @return the current milliseconds formatted time
     */
   def getNowInMillis: Long = new Date().getTime
+}
+
+object DateUtil {
+
+  def apply(): DateUtil = new DateUtil()
+
 }
