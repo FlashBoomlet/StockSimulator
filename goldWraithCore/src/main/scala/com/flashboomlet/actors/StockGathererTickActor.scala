@@ -7,7 +7,7 @@ import com.flashboomlet.Driver
   * Class used for scheduling functions on a tick cycle
   * Created by ttlynch on 02/26/17.
   */
-class YahooFinanceTickActor extends Actor {
+class StockGathererTickActor extends Actor {
 
   /** What to do on receiving a tick message */
   def receive: Actor.Receive = {

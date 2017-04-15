@@ -7,6 +7,8 @@ import com.typesafe.scalalogging.LazyLogging
 import reactivemongo.api.BSONSerializationPack.Writer
 import reactivemongo.api.DefaultDB
 import reactivemongo.api.FailoverStrategy
+import reactivemongo.api.MongoConnection.ParsedURI
+import reactivemongo.api.MongoConnectionOptions
 import reactivemongo.api.MongoDriver
 import reactivemongo.api.collections.bson.BSONCollection
 import reactivemongo.bson.BSONDateTime
@@ -17,6 +19,7 @@ import reactivemongo.bson.BSONString
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
+import scala.util.Random
 import scala.util.Success
 
 
@@ -30,7 +33,8 @@ class MongoDatabaseDriver
 
   val driver = new MongoDriver()
 
-  val connection = driver.connection(List(DatabaseIp))
+  // http://reactivemongo.org/releases/0.12/documentation/tutorial/connect-database.html
+  val connection = driver.connection(List(LocalHostString))
 
   val db: DefaultDB = Await.result(connection.database(TheGoldWraithDatabaseString,
     FailoverStrategy.default), Duration.Inf)
@@ -67,13 +71,13 @@ class MongoDatabaseDriver
     *
     * @return the stock listings in the us
     */
-  def getUSStockListings: Set[StockListing] = {
+  def getUSStockListings: List[StockListing] = {
     val selector = BSONDocument()
     Await.result(
       usStockListingsCollection
       .find(selector)
       .cursor[StockListing]()
-      .collect[Set](),
+      .collect[List](),
       Duration.Inf)
   }
 
@@ -88,7 +92,7 @@ class MongoDatabaseDriver
       StockListingConstants.Exchange -> BSONString(sl.exchange)
     )
     usStockListingsCollection.findAndUpdate(selector, sl).onComplete {
-      case Success(result) => logger.info("successfully updated tick")
+      case Success(result) => logger.info(s"successfully updated ${sl.symbol} id: ${sl.key}")
       case _ => logger.error(s"failed to update the state for ${sl.symbol} at ${sl.lastDataFetch}")
     }
   }
@@ -102,23 +106,29 @@ class MongoDatabaseDriver
   def insertUSStockListing(sl: StockListing): Unit = {
     if(!stockListingExists(sl.symbol, sl.exchange)){
       insert(sl, usStockListingsCollection)
+      logger.info(s"Successfully inserted ${sl.symbol} from ${sl.exchange} with id: ${sl.key}")
+    } else {
+      // The russians are winning. This is not okay.
+      logger.error(s"Failed to inserted ${sl.symbol} from ${sl.exchange} with id: ${sl.key}")
     }
   }
 
-  /**
-    * Get Max Key should return the max key found so far in the stock listsings database
-    *
-    * @return
-    */
-  def getMaxKey: Int = {
+  def clearAllListings(): Unit = {
+    val future = usStockListingsCollection.remove(BSONDocument())
+    Await.result(future, Duration.Inf)
+  }
+
+
+  def getKeys: List[Int] = {
     val future =  usStockListingsCollection
     .find(BSONDocument())
     .cursor[StockListing]()
     .collect[List]()
-    .map( l => l.map(s => s.key).max)
+    .map( l => l.map(s => s.key))
 
     Await.result(future, Duration.Inf)
   }
+
 
   /**
     * Determines if a stock exists in the database.

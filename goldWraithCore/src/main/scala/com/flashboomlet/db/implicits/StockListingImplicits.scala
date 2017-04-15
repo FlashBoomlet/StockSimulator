@@ -4,6 +4,7 @@ import java.util.Date
 
 import com.flashboomlet.data.StockListing
 import com.flashboomlet.db.MongoConstants
+import reactivemongo.bson.BSONBoolean
 import reactivemongo.bson.BSONDateTime
 import reactivemongo.bson.BSONDocument
 import reactivemongo.bson.BSONDocumentReader
@@ -30,7 +31,8 @@ trait StockListingImplicits extends MongoConstants {
       StockListingConstants.SummaryQuote -> BSONString(sl.summaryQuote),
       StockListingConstants.Exchange -> BSONString(sl.exchange),
       StockListingConstants.LastUpdate -> BSONDateTime(sl.lastUpdate),
-      StockListingConstants.LastDataFetch -> BSONDateTime(sl.lastDataFetch)
+      StockListingConstants.LastDataFetch -> BSONDateTime(sl.lastDataFetch),
+      StockListingConstants.Valid -> BSONBoolean(sl.valid)
     )
   }
 
@@ -51,6 +53,7 @@ trait StockListingImplicits extends MongoConstants {
       val exchange = doc.getAs[String](StockListingConstants.Exchange).get
       val lastUpdate = doc.getAs[Date](StockListingConstants.LastUpdate).get.getTime
       val lastDataFetch = doc.getAs[Date](StockListingConstants.LastDataFetch).get.getTime
+      val valid = doc.getAs[Boolean](StockListingConstants.Valid).get
 
       StockListing(
         key = key,
@@ -64,7 +67,8 @@ trait StockListingImplicits extends MongoConstants {
         summaryQuote = summaryQuote,
         exchange = exchange,
         lastUpdate = lastUpdate,
-        lastDataFetch = lastDataFetch
+        lastDataFetch = lastDataFetch,
+        valid = valid
       )
     }
   }

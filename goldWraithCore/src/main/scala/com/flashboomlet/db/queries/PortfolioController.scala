@@ -13,6 +13,8 @@ import reactivemongo.bson.BSONInteger
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 /**
   * Created by ttlynch on 4/4/17.
   */

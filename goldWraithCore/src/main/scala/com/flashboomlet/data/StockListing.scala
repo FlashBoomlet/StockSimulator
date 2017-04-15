@@ -12,6 +12,8 @@ package com.flashboomlet.data
   * @param industry the industry that it falls into
   * @param summaryQuote the URL to more information about the stock price.
   * @param exchange the exchange that the stock is in
+  * @param lastUpdate the last time that data was collected (when the system gathered it)
+  * @param lastDataFetch the last time for the stock that is on record.
   */
 case class StockListing (
   key: Int,
@@ -25,5 +27,6 @@ case class StockListing (
   summaryQuote: String,
   exchange: String,
   lastUpdate: Long,
-  lastDataFetch: Long
+  lastDataFetch: Long,
+  valid: Boolean
 )

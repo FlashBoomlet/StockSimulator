@@ -6,9 +6,12 @@ import com.flashboomlet.db.MongoDatabaseDriver
 import com.flashboomlet.db.implicits.MongoImplicits
 import com.typesafe.scalalogging.LazyLogging
 import reactivemongo.api.collections.bson.BSONCollection
+import reactivemongo.bson.BSONDocument
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
   * Created by ttlynch on 4/4/17.
@@ -489,6 +492,48 @@ class IndustryController
       .cursor[StockData]()
       .collect[List](),
       Duration.Inf)
+  }
+
+  def clearAllIndustries(): Unit = {
+
+    val one = basicIndustriesMainCollection.remove(BSONDocument())
+    Await.result(one, Duration.Inf)
+
+    val two = capitalGoodsMainCollection.remove(BSONDocument())
+    Await.result(two, Duration.Inf)
+
+    val three = consumerDurablesMainCollection.remove(BSONDocument())
+    Await.result(three, Duration.Inf)
+
+    val four = consumerNonDurablesMainCollection.remove(BSONDocument())
+    Await.result(four, Duration.Inf)
+
+    val five = consumerServicesMainCollection.remove(BSONDocument())
+    Await.result(five, Duration.Inf)
+
+    val six = energyMainCollection.remove(BSONDocument())
+    Await.result(six, Duration.Inf)
+
+    val seven = financeMainCollection.remove(BSONDocument())
+    Await.result(seven, Duration.Inf)
+
+    val eight = healthCareMainCollection.remove(BSONDocument())
+    Await.result(eight, Duration.Inf)
+
+    val nine = miscellaneousMainCollection.remove(BSONDocument())
+    Await.result(nine, Duration.Inf)
+
+    val ten = otherMainCollection.remove(BSONDocument())
+    Await.result(ten, Duration.Inf)
+
+    val eleven = publicUtilitiesMainCollection.remove(BSONDocument())
+    Await.result(eleven, Duration.Inf)
+
+    val twelve = technologyMainCollection.remove(BSONDocument())
+    Await.result(twelve, Duration.Inf)
+
+    val thirteen = transportationMainCollection.remove(BSONDocument())
+    Await.result(thirteen, Duration.Inf)
   }
 
 }
