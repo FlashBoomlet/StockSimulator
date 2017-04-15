@@ -2,13 +2,16 @@ package com.flashboomlet.gathers
 
 import com.flashboomlet.data.StockData
 import com.flashboomlet.db.MongoDatabaseDriver
+import com.flashboomlet.db.queries.IndustryController
 import com.flashboomlet.stocks.YahooFinance
 
 
 /**
   * Created by ttlynch on 2/12/17.
   */
-class StockDataGatherer(implicit val db: MongoDatabaseDriver) {
+class StockDataGatherer(
+  implicit val ic: IndustryController,
+  implicit val db: MongoDatabaseDriver) {
 
   val yahooFinance = new YahooFinance
 
@@ -46,19 +49,19 @@ class StockDataGatherer(implicit val db: MongoDatabaseDriver) {
     */
   private def insertData(sd: StockData, sector: String): Unit = {
     sector match{
-      case "Basic Industries" => db.insertBasicIndustriesMain(sd)
-      case "Capital Goods" => db.insertCapitalGoodsMain(sd)
-      case "Consumer Durables" => db.insertConsumerDurablesMain(sd)
-      case "Consumer Non-Durables" => db.insertConsumerNonDurablesMain(sd)
-      case "Consumer Services" => db.insertConsumerServicesMain(sd)
-      case "Energy" => db.insertEnergyMain(sd)
-      case "Finance" => db.insertFinanceMain(sd)
-      case "Health Care" => db.insertHealthCareMain(sd)
-      case "Miscellaneous" => db.insertMiscellaneousMain(sd)
-      case "n/a" => db.insertOtherMain(sd)
-      case "Public Utilities" => db.insertPublicUtilitiesMain(sd)
-      case "Technology" => db.insertTechnologyMain(sd)
-      case "Transportation" => db.insertTransportationMain(sd)
+      case "Basic Industries" => ic.insertBasicIndustriesMain(sd)
+      case "Capital Goods" => ic.insertCapitalGoodsMain(sd)
+      case "Consumer Durables" => ic.insertConsumerDurablesMain(sd)
+      case "Consumer Non-Durables" => ic.insertConsumerNonDurablesMain(sd)
+      case "Consumer Services" => ic.insertConsumerServicesMain(sd)
+      case "Energy" => ic.insertEnergyMain(sd)
+      case "Finance" => ic.insertFinanceMain(sd)
+      case "Health Care" => ic.insertHealthCareMain(sd)
+      case "Miscellaneous" => ic.insertMiscellaneousMain(sd)
+      case "n/a" => ic.insertOtherMain(sd)
+      case "Public Utilities" => ic.insertPublicUtilitiesMain(sd)
+      case "Technology" => ic.insertTechnologyMain(sd)
+      case "Transportation" => ic.insertTransportationMain(sd)
       case _ => /* Shiza. We have yuge problems */
     }
 
