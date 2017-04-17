@@ -6,6 +6,7 @@ import com.flashboomlet.data.StockListing
 import com.flashboomlet.db.MongoDatabaseDriver
 import com.flashboomlet.db.queries.IndustryController
 import com.flashboomlet.stocks.YahooFinance
+import com.typesafe.scalalogging.LazyLogging
 
 
 /**
@@ -13,7 +14,8 @@ import com.flashboomlet.stocks.YahooFinance
   */
 class StockDataGatherer(
   implicit val ic: IndustryController,
-  implicit val db: MongoDatabaseDriver) {
+  implicit val db: MongoDatabaseDriver)
+  extends LazyLogging {
 
   val yahooFinance = new YahooFinance
   val du = new DateUtil
@@ -31,9 +33,9 @@ class StockDataGatherer(
       if (stockData.key != -1) {
         // Updated Stock Listings with the time that it was last gathered (i.e. the time on the stockdata)
         updateStockListing(stockData.time, s)
-
         // Insert The Data
         insertData(stockData, s.sector)
+        // logger.info(s"Successfully inserted stockData: ${stockData}")
       } else {
         disableStock(s)
       }
@@ -44,9 +46,9 @@ class StockDataGatherer(
   /**
     * GatherDataHistory is a trigger to gather data from all sources
     */
-  def gatherDataHistory(): Unit = {
+  def gatherDataHistory(): Boolean = {
     // Get list of stock listings
-    val stocks = db.getUSStockListings.filter(sl => sl.valid)
+    val stocks = db.getUSStockListings.filter(sl => sl.valid).take(1)
     // Iterate through the stock listings, get updated data and insert
     stocks.foreach { s =>
       val lastUpdated = s.lastDataFetch
@@ -58,12 +60,36 @@ class StockDataGatherer(
 
           // Insert The Data
           insertData(sd, s.sector)
+          logger.info(s"Successfully inserted stockData: ${sd}")
         } else {
           disableStock(s)
         }
       }
     }
+   true
   }
+
+  def enableStock(s: StockListing): Unit = {
+    db.updateUSStockListing(
+      StockListing(
+        s.key,
+        s.symbol,
+        s.name,
+        s.lastSale,
+        s.marketCap,
+        s.ipoYear,
+        s.sector,
+        s.industry,
+        s.summaryQuote,
+        s.exchange,
+        s.lastUpdate,
+        s.lastDataFetch,
+        true
+      )
+    )
+  }
+
+
 
   private def disableStock(s: StockListing): Unit = {
     db.updateUSStockListing(
@@ -145,19 +171,32 @@ class StockDataGatherer(
     */
   private def insertData(sd: StockData, sector: String): Unit = {
     sector match{
-      case "Basic Industries" => ic.insertBasicIndustriesMain(sd)
-      case "Capital Goods" => ic.insertCapitalGoodsMain(sd)
-      case "Consumer Durables" => ic.insertConsumerDurablesMain(sd)
-      case "Consumer Non-Durables" => ic.insertConsumerNonDurablesMain(sd)
-      case "Consumer Services" => ic.insertConsumerServicesMain(sd)
-      case "Energy" => ic.insertEnergyMain(sd)
-      case "Finance" => ic.insertFinanceMain(sd)
-      case "Health Care" => ic.insertHealthCareMain(sd)
-      case "Miscellaneous" => ic.insertMiscellaneousMain(sd)
-      case "n/a" => ic.insertOtherMain(sd)
-      case "Public Utilities" => ic.insertPublicUtilitiesMain(sd)
-      case "Technology" => ic.insertTechnologyMain(sd)
-      case "Transportation" => ic.insertTransportationMain(sd)
+      case "Basic Industries" =>
+        ic.insertBasicIndustriesMain(sd)
+      case "Capital Goods" =>
+        ic.insertCapitalGoodsMain(sd)
+      case "Consumer Durables" =>
+        ic.insertConsumerDurablesMain(sd)
+      case "Consumer Non-Durables" =>
+        ic.insertConsumerNonDurablesMain(sd)
+      case "Consumer Services" =>
+        ic.insertConsumerServicesMain(sd)
+      case "Energy" =>
+        ic.insertEnergyMain(sd)
+      case "Finance" =>
+        ic.insertFinanceMain(sd)
+      case "Health Care" =>
+        ic.insertHealthCareMain(sd)
+      case "Miscellaneous" =>
+        ic.insertMiscellaneousMain(sd)
+      case "n/a" =>
+        ic.insertOtherMain(sd)
+      case "Public Utilities" =>
+        ic.insertPublicUtilitiesMain(sd)
+      case "Technology" =>
+        ic.insertTechnologyMain(sd)
+      case "Transportation" =>
+        ic.insertTransportationMain(sd)
       case _ => /* Shiza. We have yuge problems */
     }
 

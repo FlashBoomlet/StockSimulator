@@ -36,7 +36,7 @@ lazy val goldWraithCore = (project in file("goldWraithCore"))
     "com.typesafe.akka" % "akka-actor_2.11" % "2.4.10",
     "io.scalac" %% "slack-scala-bot-core" % "0.2.1",
     "com.typesafe" % "config" % "1.3.0",
-    "org.reactivemongo" %% "reactivemongo" % "0.12",
+    "org.reactivemongo" %% "reactivemongo" % "0.11.14",
     "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
     "org.scalaj" %% "scalaj-http" % "2.3.0",
     "org.scala-lang.modules" %% "scala-swing" % "1.0.1",

@@ -92,7 +92,7 @@ class MongoDatabaseDriver
       StockListingConstants.Exchange -> BSONString(sl.exchange)
     )
     usStockListingsCollection.findAndUpdate(selector, sl).onComplete {
-      case Success(result) => logger.info(s"successfully updated ${sl.symbol} id: ${sl.key}")
+      case Success(result) => // logger.info(s"successfully updated ${sl.symbol} id: ${sl.key}")
       case _ => logger.error(s"failed to update the state for ${sl.symbol} at ${sl.lastDataFetch}")
     }
   }

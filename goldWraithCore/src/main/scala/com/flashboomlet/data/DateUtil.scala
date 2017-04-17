@@ -7,10 +7,12 @@ import java.util.GregorianCalendar
 import java.util.Locale
 import java.util.TimeZone
 
+import com.typesafe.scalalogging.LazyLogging
+
 /**
   * Created by ttlynch on 2/12/17.
   */
-class DateUtil {
+class DateUtil extends LazyLogging {
 
   val calendar = new GregorianCalendar()
 
@@ -51,26 +53,60 @@ class DateUtil {
     * Date and Time to Time combines a seperate data and time and then converts it into
     * one milliseconds formatted time.
     *
-    * @param date a date string in the format of "12-12-1234"
+    * @param date a date string in the format of "12/23/4567"
     * @param time a time string in the format of "12:34.56 PM"
     * @return a milliseconds formatted time
     */
   def dateandTimetoTime(date: String, time: String): Long = {
-    val rawDate = date.split('-')
-    val subTime = time.split(':')
-    val rawTime = rawDate.flatMap(s => s.split('.')).flatMap(s => s.split(' '))
+    val rawDate = date.split('/').toList
+    val subTime = time.split(':').toList
+    val pm = if(subTime(1).contains("pm")){ 1 } else { 0 }
+    val rawTime = if(subTime(1).contains("pm")){
+      subTime.flatMap(s => s.split("pm"))
+    } else {
+      subTime.flatMap(s => s.split("am"))
+    }
 
-    val pm = if(rawTime(3) == "PM" ) { 2 } else { 1 }
-
-    formattedTimeToMillis(
+    // logger.info(s"${rawDate(2).toInt-1}, ${rawDate.head.toInt}, ${rawDate(1).toInt}, ${rawTime.head.toInt}, ${rawTime(1).toInt}, ${pm}")
+    val rtn = formattedTimeToMillis(
       rawDate(2).toInt,
+      rawDate.head.toInt-1,
       rawDate(1).toInt,
+      rawTime.head.toInt,
+      rawTime(1).toInt,
+      0,
+      pm
+    )
+    // logger.info(s"raw date ${rtn}")
+    rtn
+  }
+
+  /**
+    * Date and Time to Time combines a seperate data and time and then converts it into
+    * one milliseconds formatted time.
+    *
+    * @param date a date string in the format of "12-23-4567"
+    * @param time a time string in the format of "12:34.56 PM"
+    * @return a milliseconds formatted time
+    */
+  def dateandTimeoTimeHistory(date: String, time: String): Long = {
+    val rawDate = date.split('-').toList
+    val subTime = time.split(':').toList
+    val rawTime = subTime.flatMap(s => s.split('.')).flatMap(s => s.split(' '))
+
+    val pm = if(rawTime(3) == "PM" ) { 1 } else { 0 }
+
+    val rtn = formattedTimeToMillis(
       rawDate.head.toInt,
+      rawDate(1).toInt-1,
+      rawDate(2).toInt,
       rawTime.head.toInt,
       rawTime(1).toInt,
       rawTime(2).toInt,
       pm
     )
+    // logger.info(s"raw date ${rtn}")
+    rtn
   }
 
   /**
@@ -96,8 +132,8 @@ class DateUtil {
 
     val gc = new GregorianCalendar(TimeZone.getTimeZone("UTC"))
     gc.clear()
+    // logger.info(s"year ${year}  month ${month}  day ${day}")
     gc.set(year, month, day)
-
     val left = gc.getTimeInMillis()
     left + (hour * 3600000) + (pm * 43200000) + (minutes * 60000) + (seconds * 1000)
   }

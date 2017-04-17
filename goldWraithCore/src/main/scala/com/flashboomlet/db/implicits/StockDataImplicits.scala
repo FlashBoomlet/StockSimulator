@@ -8,6 +8,7 @@ import reactivemongo.bson.BSONDateTime
 import reactivemongo.bson.BSONDocument
 import reactivemongo.bson.BSONDocumentReader
 import reactivemongo.bson.BSONDocumentWriter
+import reactivemongo.bson.BSONDouble
 import reactivemongo.bson.BSONInteger
 import reactivemongo.bson.BSONLong
 import reactivemongo.bson.BSONString
@@ -24,13 +25,13 @@ trait StockDataImplicits extends MongoConstants {
       StockDataConstants.Symbol -> BSONString(sd.symbol),
       StockDataConstants.Exchange -> BSONString(sd.exchange),
       StockDataConstants.Time -> BSONDateTime(sd.time),
-      StockDataConstants.LastTrade -> BSONLong(sd.lastTrade),
-      StockDataConstants.Open -> BSONLong(sd.open),
-      StockDataConstants.Ask -> BSONLong(sd.ask),
-      StockDataConstants.Bid -> BSONLong(sd.bid),
-      StockDataConstants.Volume -> BSONLong(sd.volume),
-      StockDataConstants.DayLow -> BSONLong(sd.dayLow),
-      StockDataConstants.DayHigh -> BSONLong(sd.dayHigh),
+      StockDataConstants.LastTrade -> BSONDouble(sd.lastTrade),
+      StockDataConstants.Open -> BSONDouble(sd.open),
+      StockDataConstants.Ask -> BSONDouble(sd.ask),
+      StockDataConstants.Bid -> BSONDouble(sd.bid),
+      StockDataConstants.Volume -> BSONDouble(sd.volume),
+      StockDataConstants.DayLow -> BSONDouble(sd.dayLow),
+      StockDataConstants.DayHigh -> BSONDouble(sd.dayHigh),
       StockDataConstants.Source -> BSONString(sd.source),
       StockDataConstants.FetchDate -> BSONDateTime(sd.fetchDate)
     )
@@ -46,13 +47,13 @@ trait StockDataImplicits extends MongoConstants {
       val symbol =  doc.getAs[String](StockDataConstants.Symbol).get
       val exchange =  doc.getAs[String](StockDataConstants.Exchange).get
       val time = doc.getAs[Date](StockDataConstants.Time).get.getTime
-      val lastTrade =  doc.getAs[Long](StockDataConstants.LastTrade).get
-      val open =  doc.getAs[Long](StockDataConstants.Open).get
-      val ask =  doc.getAs[Long](StockDataConstants.Ask).get
-      val bid =  doc.getAs[Long](StockDataConstants.Bid).get
-      val volume =  doc.getAs[Long](StockDataConstants.Volume).get
-      val dayLow =  doc.getAs[Long](StockDataConstants.DayLow).get
-      val dayHigh =  doc.getAs[Long](StockDataConstants.DayHigh).get
+      val lastTrade =  doc.getAs[Double](StockDataConstants.LastTrade).get
+      val open =  doc.getAs[Double](StockDataConstants.Open).get
+      val ask =  doc.getAs[Double](StockDataConstants.Ask).get
+      val bid =  doc.getAs[Double](StockDataConstants.Bid).get
+      val volume =  doc.getAs[Double](StockDataConstants.Volume).get
+      val dayLow =  doc.getAs[Double](StockDataConstants.DayLow).get
+      val dayHigh =  doc.getAs[Double](StockDataConstants.DayHigh).get
       val source =  doc.getAs[String](StockDataConstants.Source).get
       val fetchDate = doc.getAs[Date](StockDataConstants.FetchDate).get.getTime
 
