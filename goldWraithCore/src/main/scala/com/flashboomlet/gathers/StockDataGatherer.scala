@@ -4,7 +4,7 @@ import com.flashboomlet.data.DateUtil
 import com.flashboomlet.data.StockData
 import com.flashboomlet.data.StockListing
 import com.flashboomlet.db.MongoDatabaseDriver
-import com.flashboomlet.db.queries.IndustryController
+import com.flashboomlet.db.controllers.IndustryController
 import com.flashboomlet.stocks.YahooFinance
 import com.typesafe.scalalogging.LazyLogging
 

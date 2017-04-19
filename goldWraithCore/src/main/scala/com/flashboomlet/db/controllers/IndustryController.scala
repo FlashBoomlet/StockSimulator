@@ -1,4 +1,4 @@
-package com.flashboomlet.db.queries
+package com.flashboomlet.db.controllers
 
 import com.flashboomlet.data.StockData
 import com.flashboomlet.db.MongoConstants

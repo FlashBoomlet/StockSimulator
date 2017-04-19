@@ -21,7 +21,8 @@ class Controls {
     * about the market.
     *
     * Usage:
-    *   market=[market]
+    *   start=[mm/dd/yyyy]
+    *   end=[mm/dd/yyyy] optional
     *   option=[option]
     *     Options:
     *       ma: Most Active
@@ -32,11 +33,11 @@ class Controls {
     * @param options
     */
   def getMarketPrices(options: Array[String]): Unit = {
-    val market = options.filter(p => p.contains("market")).head.split("=").last
-    println("Market: " + market)
-    val option = options.filter(p => p.contains("option")).head.split("=").last
+    val start = options.filter(p => p.toLowerCase().contains("start")).head.split("=").last
+    val end = options.filter(p => p.toLowerCase().contains("end")).head.split("=").last
+    val option = options.filter(p => p.toLowerCase().contains("option")).head.split("=").last
 
-    marketInfo.getMarketInfo(market, option)
+    marketInfo.getMarketInfo(start, end, option)
 
   }
 
@@ -52,9 +53,12 @@ class Controls {
     * @param options
     */
   def getPortfolio(options: Array[String]): Unit = {
-    val uid = options.filter(p => p.contains("uid")).head.split("=").last.toInt
-
-    portfolio.getInformation(uid)
+    val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last.toInt
+    if(options.map(s => s.toLowerCase()).exists(s => s.contains("getuserids"))){
+      portfolio.getUsers()
+    } else {
+      portfolio.getInformation(uid)
+    }
   }
 
   /**
@@ -70,8 +74,8 @@ class Controls {
     * @param options
     */
   def getQuote(options: Array[String]): Unit = {
-    val market = options.filter(p => p.contains("market")).head.split("=").last
-    val symbol = options.filter(p => p.contains("symbol")).head.split("=").last
+    val market = options.filter(p => p.toLowerCase().contains("market")).head.split("=").last
+    val symbol = options.filter(p => p.toLowerCase().contains("symbol")).head.split("=").last
 
     marketInfo.getQuote(market, symbol)
   }
@@ -90,19 +94,19 @@ class Controls {
     * @param options
     */
   def tradeStock(options: Array[String]): Unit = {
-    val uid = options.filter(p => p.contains("uid")).head.split("=").last.toInt
-    val market = options.filter(p => p.contains("market")).head.split("=").last
-    val symbol = options.filter(p => p.contains("symbol")).head.split("=").last
-    val units = options.filter(p => p.contains("units")).head.split("=").last.toInt
-    val contract = options.filter(p => p.contains("contract")).head.split("=").last
-    val action = options.filter(p => p.contains("action")).head.split("=").last
+    val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last.toInt
+    val market = options.filter(p => p.toLowerCase().contains("market")).head.split("=").last
+    val symbol = options.filter(p => p.toLowerCase().contains("symbol")).head.split("=").last
+    val units = options.filter(p => p.toLowerCase().contains("units")).head.split("=").last.toInt
+    val contract = options.filter(p => p.toLowerCase().contains("contract")).head.split("=").last
+    val action = options.filter(p => p.toLowerCase().contains("action")).head.split("=").last
 
     if(action == "sell") {
       trader.sell(uid, market, symbol, units, contract)
     } else if(action == "buy") {
       trader.buy(uid, market, symbol, units, contract)
     } else {
-      println("Your request was not processed!");
+      println("Your request was not processed!")
     }
   }
 
@@ -120,9 +124,9 @@ class Controls {
     * @param options
     */
   def graphStock(options: Array[String]): Unit = {
-    val symbol = options.filter(p => p.contains("symbol")).head.split("=").last
-    val start = options.filter(p => p.contains("start")).head.split("=").last.toLong
-    val end = options.filter(p => p.contains("end")).head.split("=").last.toLong
+    val symbol = options.filter(p => p.toLowerCase().contains("symbol")).head.split("=").last
+    val start = options.filter(p => p.toLowerCase().contains("start")).head.split("=").last.toLong
+    val end = options.filter(p => p.toLowerCase().contains("end")).head.split("=").last.toLong
 
     grapher.GraphStock(symbol, start, end)
   }
