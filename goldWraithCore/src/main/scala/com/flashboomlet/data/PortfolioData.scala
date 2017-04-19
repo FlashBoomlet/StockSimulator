@@ -10,9 +10,9 @@ case class PortfolioData(
   symbol: String,
   units: Int,
   purchaseDate: Long,
-  purchasePrice: Long,
+  purchasePrice: Double,
   sellDate: Long,
-  sellPrice: Long,
+  sellPrice: Double,
   contractType: String,
   contractEndDate: Long
 )

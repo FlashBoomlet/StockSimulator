@@ -12,9 +12,9 @@ import com.flashboomlet.actors.AkkaConstants
 import com.flashboomlet.actors.StockGathererTickActor
 import com.flashboomlet.data.DateUtil
 import com.flashboomlet.db.MongoDatabaseDriver
-import com.flashboomlet.db.queries.IndustryController
-import com.flashboomlet.db.queries.MarketController
-import com.flashboomlet.db.queries.PortfolioController
+import com.flashboomlet.db.controllers.IndustryController
+import com.flashboomlet.db.controllers.MarketController
+import com.flashboomlet.db.controllers.PortfolioController
 import com.flashboomlet.gathers.ListingGatherer
 import com.flashboomlet.gathers.StockDataGatherer
 import com.typesafe.scalalogging.LazyLogging

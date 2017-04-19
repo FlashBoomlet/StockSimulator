@@ -8,6 +8,7 @@ import reactivemongo.bson.BSONDateTime
 import reactivemongo.bson.BSONDocument
 import reactivemongo.bson.BSONDocumentReader
 import reactivemongo.bson.BSONDocumentWriter
+import reactivemongo.bson.BSONDouble
 import reactivemongo.bson.BSONInteger
 import reactivemongo.bson.BSONLong
 import reactivemongo.bson.BSONString
@@ -25,9 +26,9 @@ trait PortfolioDataImplicits extends MongoConstants {
       PortfolioDataConstants.Symbol -> BSONString(pd.symbol),
       PortfolioDataConstants.Units -> BSONInteger(pd.units),
       PortfolioDataConstants.PurchaseDate -> BSONDateTime(pd.purchaseDate),
-      PortfolioDataConstants.PurchasePrice -> BSONLong(pd.purchasePrice),
+      PortfolioDataConstants.PurchasePrice -> BSONDouble(pd.purchasePrice),
       PortfolioDataConstants.SellDate -> BSONDateTime(pd.sellDate),
-      PortfolioDataConstants.SellPrice -> BSONLong(pd.sellPrice),
+      PortfolioDataConstants.SellPrice -> BSONDouble(pd.sellPrice),
       PortfolioDataConstants.ContractType -> BSONString(pd.contractType),
       PortfolioDataConstants.ContractEndDate -> BSONDateTime(pd.contractEndDate)
     )
@@ -44,9 +45,9 @@ trait PortfolioDataImplicits extends MongoConstants {
       val symbol = doc.getAs[String](PortfolioDataConstants.Symbol).get
       val units = doc.getAs[Int](PortfolioDataConstants.Units).get
       val purchaseDate = doc.getAs[Date](PortfolioDataConstants.PurchaseDate).get.getTime
-      val purchasePrice = doc.getAs[Long](PortfolioDataConstants.PurchasePrice).get
+      val purchasePrice = doc.getAs[Double](PortfolioDataConstants.PurchasePrice).get
       val sellDate = doc.getAs[Date](PortfolioDataConstants.SellDate).get.getTime
-      val sellPrice = doc.getAs[Long](PortfolioDataConstants.SellPrice).get
+      val sellPrice = doc.getAs[Double](PortfolioDataConstants.SellPrice).get
       val contractType = doc.getAs[String](PortfolioDataConstants.ContractType).get
       val contractEndDate = doc.getAs[Date](PortfolioDataConstants.ContractEndDate).get.getTime
 

@@ -44,40 +44,52 @@ object StockShell {
 
     println("stockShell:[request] [options...]")
     println("\tEx:\tstockShell:portfolio uid=ttlynch\n\n")
+    getMarketUsage()
+    println("\n")
+    getPortfolioUsage()
+    println("\n")
+    getQuoteUsage()
+    println("\n")
+    getTradeUsage()
+    println("\n")
+    getGraphUsage()
+  }
 
-
+  def getMarketUsage(): Unit = {
     println("Request: market")
     println("\tGet various data on a market")
     println("Usage:")
-    println("\tmarket=[market]")
+    println("\tmarket=[nyse/nasdaq]")
     println("\toption=[option]")
     println("\t\tOptions:")
     println("\t\t\tma: Most Active")
     println("\t\t\tbg: Biggest Gainers")
     println("\t\t\tbl: Biggest Losers")
     println("\t\t\tmv: Most Volatile")
+  }
 
-    println("\n")
-
+  def getPortfolioUsage(): Unit = {
     println("Request: portfolio")
     println("\tGet users portfolio information")
     println("Usage:")
     println("\tuid=[user id]")
+    println("getUserIDs")
     println("Future:")
     println("\tfilter=[filter]")
+  }
 
-    println("\n")
-
+  def getQuoteUsage(): Unit = {
     println("Request: quote")
     println("\t Get information on a stock symbol")
     println("Usage:")
-    println("\tmarket=[market]")
+    println("\tstart=[mm/dd/yyyy]")
+    println("\tend=[mm/dd/yyyy] optional")
     println("\tsymbol=[quote]")
     println("Future:")
     println("\tindicators=[indicators]")
+  }
 
-    println("\n")
-
+  def getTradeUsage(): Unit  = {
     println("Option: trade")
     println("\tTrade a given stock based on the symbol")
     println("Usage:")
@@ -87,9 +99,9 @@ object StockShell {
     println("\tunits=[units]")
     println("\tcontract=[type of contract (put/call)]")
     println("\taction=[action (buy/sell)]")
+  }
 
-    println("\n")
-
+  def getGraphUsage(): Unit = {
     println("Option: graph")
     println("\tGraph a stock on a pop up graph")
     println("Usage:")

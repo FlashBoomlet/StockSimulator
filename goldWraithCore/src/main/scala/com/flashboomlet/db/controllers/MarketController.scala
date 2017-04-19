@@ -1,5 +1,6 @@
-package com.flashboomlet.db.queries
+package com.flashboomlet.db.controllers
 
+import com.flashboomlet.data.DateUtil
 import com.flashboomlet.data.StockData
 import com.flashboomlet.db.MongoConstants
 import com.flashboomlet.db.MongoDatabaseDriver
@@ -19,6 +20,20 @@ class MarketController
   /** Instance of pre-configured database driver. */
   val databaseDriver = MongoDatabaseDriver()
   val industryController = new IndustryController()
+  val du = new DateUtil
+
+  def getStock(symbol: String): StockData = {
+    val listing = databaseDriver.getUSStockListing(symbol)
+    val now = du.getNowInMillis
+    getData(listing.sector,listing.lastDataFetch,now, symbol,listing.exchange).maxBy(s => s.time)
+  }
+
+  def getStock(symbol: String, exchange: String): StockData = {
+    val listing = databaseDriver.getUSStockListing(symbol, exchange)
+    val now = du.getNowInMillis
+    getData(listing.sector,listing.lastDataFetch,now, symbol,listing.exchange).maxBy(s => s.time)
+  }
+
 
   // Aggregate and calculate the most active stocks
   def getOverallMostActive(start: Long, end: Long): List[(StockData, Double)] = {

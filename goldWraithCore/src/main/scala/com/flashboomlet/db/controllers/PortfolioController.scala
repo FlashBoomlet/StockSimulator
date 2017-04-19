@@ -1,4 +1,4 @@
-package com.flashboomlet.db.queries
+package com.flashboomlet.db.controllers
 
 import com.flashboomlet.data.PortfolioData
 import com.flashboomlet.data.PredictionData
@@ -9,11 +9,12 @@ import com.typesafe.scalalogging.LazyLogging
 import reactivemongo.api.collections.bson.BSONCollection
 import reactivemongo.bson.BSONDocument
 import reactivemongo.bson.BSONInteger
+import reactivemongo.bson.BSONLong
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
-
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.Success
 
 /**
   * Created by ttlynch on 4/4/17.
@@ -31,8 +32,16 @@ class PortfolioController
   val portfolioDataCollection: BSONCollection = databaseDriver
     .db(PortfolioDataCollection)
 
-  def uidExist(): Boolean = {
-    false
+  def uidExist(uid: Integer): List[PortfolioData] = {
+    val future =  portfolioDataCollection
+    .find(BSONDocument(
+      PortfolioDataConstants.Uid -> BSONInteger(uid)
+    ))
+    .cursor[BSONDocument]()
+    .collect[List]()
+    .map(list => list.nonEmpty)
+
+    Await.result(future, Duration.Inf)
   }
 
   /**
@@ -45,6 +54,21 @@ class PortfolioController
   }
 
   /**
+    * Updates Portfolio data
+    *
+    * @param pd  PortfolioData
+    */
+  def updatePortfolioData(pd: PortfolioData): Unit = {
+    val selector = BSONDocument(
+      PortfolioDataConstants.Symbol -> BSONLong(pd.transactionId)
+    )
+    portfolioDataCollection.findAndUpdate(selector, pd).onComplete {
+      case Success(result) => // Do Nothing, we win
+      case _ => logger.error(s"failed to update the state for ${pd.transactionId}")
+    }
+  }
+
+  /**
     * Get PortfolioData Main retrieves data for the portfolio Data collection
     *
     * @param uid the User ID
@@ -54,7 +78,7 @@ class PortfolioController
     uid: Int): List[PortfolioData] =  {
 
     val selector = BSONDocument(
-      StockDataConstants.Exchange -> BSONInteger(uid)
+      PortfolioDataConstants.Uid -> BSONInteger(uid)
     )
 
     Await.result(
@@ -65,6 +89,26 @@ class PortfolioController
       Duration.Inf)
   }
 
+  /**
+    * Get PortfolioData Main retrieves data for the portfolio Data collection
+    *
+    * @return a list of PortfolioData
+    */
+  def getAllPortfolioData(): List[PortfolioData] =  {
+
+    val selector = BSONDocument()
+
+    Await.result(
+      portfolioDataCollection
+      .find(selector)
+      .cursor[PortfolioData]()
+      .collect[List](),
+      Duration.Inf)
+  }
+
+  def getTransactionID(): Long = {
+    getAllPortfolioData.map(s => s.transactionId).max+1
+  }
 
   /**
     * Inserts Prediction data to the PredictionDataCollection
@@ -85,7 +129,7 @@ class PortfolioController
     uid: Int): List[PredictionData] =  {
 
     val selector = BSONDocument(
-      StockDataConstants.Exchange -> BSONInteger(uid)
+      PortfolioDataConstants.Uid -> BSONInteger(uid)
     )
 
     Await.result(

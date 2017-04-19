@@ -49,6 +49,16 @@ class DateUtil extends LazyLogging {
     calendar.get(Calendar.DAY_OF_MONTH)
   }
 
+  def dateToHour(datetime: Long): Int = {
+    calendar.setTime(new Date(datetime))
+    calendar.get(Calendar.HOUR)
+  }
+
+  def morning(datetime: Long): Int = {
+    calendar.setTime(new Date(datetime))
+    calendar.get(Calendar.AM)
+  }
+
   /**
     * Date and Time to Time combines a seperate data and time and then converts it into
     * one milliseconds formatted time.

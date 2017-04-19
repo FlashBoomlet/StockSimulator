@@ -82,6 +82,48 @@ class MongoDatabaseDriver
   }
 
   /**
+    * Get Stock Listing is a function to retrieve a stock listings in the us
+    *
+    * @return the stock listings in the us
+    */
+  def getUSStockListing(symbol: String): StockListing = {
+    val selector = BSONDocument(
+      StockListingConstants.Symbol -> BSONString(symbol)
+    )
+    val future = usStockListingsCollection
+    .find(selector)
+    .cursor[StockListing]()
+    .collect[List]()
+    .map(list => list.head)
+
+    Await.result(
+      future,
+      Duration.Inf)
+  }
+
+
+  /**
+    * Get Stock Listing is a function to retrieve a stock listings in the us
+    *
+    * @return the stock listings in the us
+    */
+  def getUSStockListing(symbol: String, exchange: String): StockListing = {
+    val selector = BSONDocument(
+      StockListingConstants.Symbol -> BSONString(symbol),
+      StockListingConstants.Exchange -> BSONString(exchange)
+    )
+    val future = usStockListingsCollection
+    .find(selector)
+    .cursor[StockListing]()
+    .collect[List]()
+    .map(list => list.head)
+
+    Await.result(
+      future,
+      Duration.Inf)
+  }
+
+  /**
     * Updates a stock listing
     *
     * @param sl a stock listing
