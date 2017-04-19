@@ -32,7 +32,7 @@ object AkkaConstants {
 
   /** Initial delay for scheduling actors, in milliseconds */
   private[this] val InitialMilliseconds = if(desiredTime-cur > 0){
-    0 // TODO: desiredTime-cur
+    desiredTime-cur
   } else 0
 
 

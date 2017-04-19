@@ -50,8 +50,8 @@ class ListingGatherer(implicit val db: MongoDatabaseDriver) extends LazyLogging 
     populateListings(downloadLocation + "nyse_listings.csv", nyse)
     populateListings(downloadLocation + "nasdq_listings.csv", nasdaq)
 
-    // Update Keys
-    (db.getUSStockListings zipWithIndex)
+    // Update Keys and ensure that the keys are sorted by order as to not mess up previously set keys.
+    (db.getUSStockListings.sortBy(s => s.key) zipWithIndex)
       .foreach{ l =>
         db.updateUSStockListing(
           StockListing(
@@ -73,7 +73,12 @@ class ListingGatherer(implicit val db: MongoDatabaseDriver) extends LazyLogging 
     }
   }
 
-  def fileDownloader(url: String, filename: String) = {
+  /**
+    * File Downloader is used to download files to temporary storage to update the stock listings
+    * @param url the url to gather the data from
+    * @param filename the file name to save the data gathered from
+    */
+  def fileDownloader(url: String, filename: String): Unit = {
     new URL(url) #> new File(downloadLocation, filename) !!
   }
 

@@ -15,6 +15,7 @@ import com.flashboomlet.db.MongoDatabaseDriver
 import com.flashboomlet.db.queries.IndustryController
 import com.flashboomlet.db.queries.MarketController
 import com.flashboomlet.db.queries.PortfolioController
+import com.flashboomlet.gathers.ListingGatherer
 import com.flashboomlet.gathers.StockDataGatherer
 import com.typesafe.scalalogging.LazyLogging
 
@@ -44,49 +45,34 @@ object Driver  extends LazyLogging {
 
   /** Main entry point to the program */
   def main(args: Array[String]): Unit = {
-
+    /*
+     * Pull in historical data from last pulled date to current.
+     * Start pulling in data at 4pm UTC and there after every 24 hours.
+     */
     val du = new DateUtil
+    val sd = new StockDataGatherer
+    val lg = new ListingGatherer
     val startOfSim = du.getNowInMillis
 
+    // Have the ability to clear listings as seen applicable.
+    // lg.clearListings()
+    // industryController.clearAllIndustries()
 
-    val sd = new StockDataGatherer
-    //databaseDriver.getUSStockListings.foreach(s => sd.enableStock(s))
-    val tmpFinishOne = du.getNowInMillis-startOfSim
-    logger.info(s"It took: ${tmpFinishOne} milliseconds to update stock listings")
-    sd.gatherData()
-    logger.info(s"It took: ${tmpFinishOne-startOfSim} milliseconds to update stocks")
+    lg.getListings
+    val fetchIndustriesFinish = du.getNowInMillis
+    logger.info(s"It took: ${fetchIndustriesFinish-startOfSim} milliseconds to update historical data")
+    val reenableStart = du.getNowInMillis
+    // re-enable all stocks are the beginning of the simulations to see if there is data available.
+    databaseDriver.getUSStockListings.foreach(s => sd.enableStock(s))
+    // Gather Historical Data
+    val reenableFinish = du.getNowInMillis
+    logger.info(s"It took: ${reenableFinish-fetchIndustriesFinish} milliseconds to re-enable all stocks")
+    sd.gatherDataHistory()
+    val historicalFinish = du.getNowInMillis
+    logger.info(s"It took: ${historicalFinish-reenableFinish} milliseconds to update historical data")
 
-    /*
-        // Check the network connection
-        val internetTest = testInternet("google.com")
-        if(!internetTest){
-          logger.info(s"\n\n*************\n\nIs the internet functioning? $internetTest\n\n*************\n")
-          System.exit(1)
-        }
-
-        val lg = new ListingGatherer
-        // TODO: Clear all stock listings for now
-        lg.clearListings()
-        industryController.clearAllIndustries()
-
-        // This should hopefully not print anything.
-        lg.fetchListings.foreach(println)
-        // Ensure that the stock listings are up to date
-        lg.getListings
-
-
-        println("\n\n\n\n\n\n" + industryController.getBasicIndustriesMain(1491890400000L,1492239367913L,"TSLA","NASDAQ") + "\n\n\n\n")
-
-        */
     // Configure and start the scheduler
-    // configureScheduler()
-
-    println("\nTesting to see if the data gathering was successful.\n")
-    println(databaseDriver.getUSStockListings.filter(p => p.symbol == "TSLA").head)
-    industryController.getCapitalGoodsMain(1491890400000L,1492239367913L,"TSLA","NASDAQ").foreach(println)
-
-    println("\n\n\nSim has been running for:" +  (du.getNowInMillis-startOfSim) + " (milliseconds)\n\n\n\n")
-    System.exit(1)
+    configureScheduler()
   }
 
   def testInternet(site: String): Boolean = {
