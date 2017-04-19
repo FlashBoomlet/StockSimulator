@@ -32,7 +32,7 @@ class PortfolioController
   val portfolioDataCollection: BSONCollection = databaseDriver
     .db(PortfolioDataCollection)
 
-  def uidExist(uid: Integer): List[PortfolioData] = {
+  def uidExist(uid: Integer): Boolean = {
     val future =  portfolioDataCollection
     .find(BSONDocument(
       PortfolioDataConstants.Uid -> BSONInteger(uid)
