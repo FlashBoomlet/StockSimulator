@@ -25,7 +25,7 @@ class PortfolioInfo {
 
   private def uidValid(uid: Integer): Boolean = {
     val uidList = pc.uidExist(uid)
-    if(uidList.size > 0) true
+    if(uidList) true
     else false
   }
 

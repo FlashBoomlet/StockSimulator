@@ -59,7 +59,8 @@ object StockShell {
     println("Request: market")
     println("\tGet various data on a market")
     println("Usage:")
-    println("\tmarket=[nyse/nasdaq]")
+    println("\tstart=[mm/dd/yyyy]")
+    println("\tend=[mm/dd/yyyy] optional")
     println("\toption=[option]")
     println("\t\tOptions:")
     println("\t\t\tma: Most Active")
@@ -78,12 +79,12 @@ object StockShell {
     println("\tfilter=[filter]")
   }
 
+
   def getQuoteUsage(): Unit = {
     println("Request: quote")
     println("\t Get information on a stock symbol")
     println("Usage:")
-    println("\tstart=[mm/dd/yyyy]")
-    println("\tend=[mm/dd/yyyy] optional")
+    println("\tmarket=[nyse/nasdaq]")
     println("\tsymbol=[quote]")
     println("Future:")
     println("\tindicators=[indicators]")
