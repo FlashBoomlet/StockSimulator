@@ -94,7 +94,7 @@ class Controls {
     * @param options
     */
   def tradeStock(options: Array[String]): Unit = {
-    val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last.toInt
+    val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last
     val market = options.filter(p => p.toLowerCase().contains("market")).head.split("=").last
     val symbol = options.filter(p => p.toLowerCase().contains("symbol")).head.split("=").last
     val units = options.filter(p => p.toLowerCase().contains("units")).head.split("=").last.toInt
