@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+
+
+services:
+  goldWraithCore:
+    image: com.flashboomlet/goldWraithCore
+    container_name: goldWraithCore_scavenger
+    volumes:
+     - /home/ttlynch/Desktop/goldWraithCore/logs/:/logs
+    depends_on:
+      - db
+
+  db:
+    image: mongo
+    container_name: mongo_goldrwaith

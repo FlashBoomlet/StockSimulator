@@ -41,6 +41,7 @@ class MongoDatabaseDriver
 
   val usStockListingsCollection: BSONCollection = db(USStockListingsCollection)
 
+
   /**
     * Stock Selector returns a selector for complex queries to retrieve data
     *

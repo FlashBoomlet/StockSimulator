@@ -57,7 +57,7 @@ object Driver  extends LazyLogging {
     // Have the ability to clear listings as seen applicable.
     // lg.clearListings()
     // industryController.clearAllIndustries()
-
+/*
     lg.getListings
     val fetchIndustriesFinish = du.getNowInMillis
     logger.info(s"It took: ${fetchIndustriesFinish-startOfSim} milliseconds to update historical data")
@@ -70,7 +70,7 @@ object Driver  extends LazyLogging {
     sd.gatherDataHistory()
     val historicalFinish = du.getNowInMillis
     logger.info(s"It took: ${historicalFinish-reenableFinish} milliseconds to update historical data")
-
+*/
     // Configure and start the scheduler
     configureScheduler()
   }
