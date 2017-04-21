@@ -21,8 +21,7 @@ lazy val commonSettings = Seq(
     "Typesafe Releases" at "https://repo.typesafe.com/typesafe/maven-releases/",
     "Maven central" at "http://repo1.maven.org/maven2/",
     "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/",
-    "scalac repo" at "https://raw.githubusercontent.com/ScalaConsultants/mvn-repo/master/",
-    Resolver.mavenLocal
+    "scalac repo" at "https://raw.githubusercontent.com/ScalaConsultants/mvn-repo/master/"
   ),
   libraryDependencies ++= Seq(
     "com.typesafe.akka" % "akka-actor_2.11" % "2.4.10",
@@ -46,23 +45,5 @@ lazy val goldWraithCore = (project in file("goldWraithCore"))
 .settings(
   name := "goldWraithCore",
   version := "0.1.0",
-  logLevel := Level.Error,
-  javaOptions += "-Dlogback.configurationFile=../goldWraithCore/src/main/resources/logback.xml",
-  dockerfile in docker := {
-    val artifact: File = assembly.value
-    val artifactTargetPath = s"/opt/${artifact.name}"
-    val runJar = Seq(
-      "java",
-      "-jar",
-      "-Dlogback.configurationFile=/opt/conf/logback.xml",
-      artifactTargetPath)
-
-    new Dockerfile {
-      from("java:8-jre")
-      add(artifact, artifactTargetPath)
-      add(new File("./goldWraithCore/src/main/resources/logback.xml"), "/opt/conf/logback.xml")
-      entryPoint(runJar: _*)
-    }
-  })
-.enablePlugins(DockerPlugin)
+  javaOptions += "-Dlogback.configurationFile=../goldWraithCore/src/main/resources/logback.xml")
 

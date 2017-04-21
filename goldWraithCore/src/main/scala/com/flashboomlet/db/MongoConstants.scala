@@ -142,6 +142,9 @@ trait MongoConstants {
     * String constants used in the conversation state collection model schema
     */
   object PredictionDataConstants {
+    /* String constant for the `uid` field in a MongoDB PredictionData document */
+    final val Uid = "uid"
+
     /* String constant for the `transactionId` field in a MongoDB PredictionData document */
     final val TransactionId = "transactionid"
 

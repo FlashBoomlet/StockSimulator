@@ -12,7 +12,7 @@ class PortfolioInfo {
   val pc = new PortfolioController
 
   // Return list[PortfolioData] (not set or queue as order matters)
-  def getInformation(uid: Integer): Unit = {
+  def getInformation(uid: String): Unit = {
     if(uidValid(uid)){
       println(s"\nPortfolio Data for $uid:")
       pc.getPortfolioData(uid).foreach{ d =>
@@ -23,7 +23,7 @@ class PortfolioInfo {
     }
   }
 
-  private def uidValid(uid: Integer): Boolean = {
+  private def uidValid(uid: String): Boolean = {
     val uidList = pc.uidExist(uid)
     if(uidList) true
     else false

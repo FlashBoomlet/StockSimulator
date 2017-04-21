@@ -111,7 +111,7 @@ class Controls {
     if(options.head == "help"){
       ShellHelp.getPortfolioUsage()
     }
-    val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last.toInt
+    val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last
     if(options.map(s => s.toLowerCase()).exists(s => s.contains("getuserids"))){
       portfolio.getUsers()
     } else {
