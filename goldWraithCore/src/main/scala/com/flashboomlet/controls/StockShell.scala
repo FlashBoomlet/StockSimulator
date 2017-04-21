@@ -33,84 +33,16 @@ object StockShell {
       case "graph" => controls.graphStock(options)
       case "trade" => controls.tradeStock(options)
       case "market" => controls.getMarketPrices(options)
+      case "bank" => controls.bank(options)
+      case "account" => controls.account(options)
       case "system" => controls.getSystemInformation(options)
-      case _ => help()
+      case "clearall" => controls.clearAll()
+      case "clear" => controls.clearPortfolio()
+      case _ => ShellHelp.allHelp()
     }
     return ""
   }
 
-  def help(): Unit = {
-    println("\nStock Shell Help:\n")
 
-    println("stockShell:[request] [options...]")
-    println("\tEx:\tstockShell:portfolio uid=ttlynch\n\n")
-    getMarketUsage()
-    println("\n")
-    getPortfolioUsage()
-    println("\n")
-    getQuoteUsage()
-    println("\n")
-    getTradeUsage()
-    println("\n")
-    getGraphUsage()
-  }
-
-  def getMarketUsage(): Unit = {
-    println("Request: market")
-    println("\tGet various data on a market")
-    println("Usage:")
-    println("\tstart=[mm/dd/yyyy]")
-    println("\tend=[mm/dd/yyyy] optional")
-    println("\toption=[option]")
-    println("\t\tOptions:")
-    println("\t\t\tma: Most Active")
-    println("\t\t\tbg: Biggest Gainers")
-    println("\t\t\tbl: Biggest Losers")
-    println("\t\t\tmv: Most Volatile")
-  }
-
-  def getPortfolioUsage(): Unit = {
-    println("Request: portfolio")
-    println("\tGet users portfolio information")
-    println("Usage:")
-    println("\tuid=[user id]")
-    println("getUserIDs")
-    println("Future:")
-    println("\tfilter=[filter]")
-  }
-
-
-  def getQuoteUsage(): Unit = {
-    println("Request: quote")
-    println("\t Get information on a stock symbol")
-    println("Usage:")
-    println("\tmarket=[nyse/nasdaq]")
-    println("\tsymbol=[quote]")
-    println("Future:")
-    println("\tindicators=[indicators]")
-  }
-
-  def getTradeUsage(): Unit  = {
-    println("Option: trade")
-    println("\tTrade a given stock based on the symbol")
-    println("Usage:")
-    println("\tuid=[user id]")
-    println("\tmarket=[market]")
-    println("\tsymbol=[symbol]")
-    println("\tunits=[units]")
-    println("\tcontract=[type of contract (put/call)]")
-    println("\taction=[action (buy/sell)]")
-  }
-
-  def getGraphUsage(): Unit = {
-    println("Option: graph")
-    println("\tGraph a stock on a pop up graph")
-    println("Usage:")
-    println("\tsymbol=[symbol]")
-    println("\tstart=[start date]")
-    println("\tend=[end date]")
-    println("Future:")
-    println("\tindicators=[indicators]")
-  }
 
 }

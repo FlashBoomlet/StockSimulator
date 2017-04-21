@@ -10,6 +10,7 @@ import reactivemongo.api.collections.bson.BSONCollection
 import reactivemongo.bson.BSONDocument
 import reactivemongo.bson.BSONInteger
 import reactivemongo.bson.BSONLong
+import reactivemongo.bson.BSONString
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
@@ -32,10 +33,10 @@ class PortfolioController
   val portfolioDataCollection: BSONCollection = databaseDriver
     .db(PortfolioDataCollection)
 
-  def uidExist(uid: Integer): Boolean = {
+  def uidExist(uid: String): Boolean = {
     val future =  portfolioDataCollection
     .find(BSONDocument(
-      PortfolioDataConstants.Uid -> BSONInteger(uid)
+      PortfolioDataConstants.Uid -> BSONString(uid)
     ))
     .cursor[BSONDocument]()
     .collect[List]()
@@ -75,10 +76,10 @@ class PortfolioController
     * @return a list of PortfolioData
     */
   def getPortfolioData(
-    uid: Int): List[PortfolioData] =  {
+    uid: String): List[PortfolioData] =  {
 
     val selector = BSONDocument(
-      PortfolioDataConstants.Uid -> BSONInteger(uid)
+      PortfolioDataConstants.Uid -> BSONString(uid)
     )
 
     Await.result(
@@ -126,10 +127,10 @@ class PortfolioController
     * @return a list of PredictionData
     */
   def getPredictionData(
-    uid: Int): List[PredictionData] =  {
+    uid: String): List[PredictionData] =  {
 
     val selector = BSONDocument(
-      PortfolioDataConstants.Uid -> BSONInteger(uid)
+      PortfolioDataConstants.Uid -> BSONString(uid)
     )
 
     Await.result(
@@ -140,6 +141,22 @@ class PortfolioController
       Duration.Inf)
   }
 
+
+  private def clearAllPrediction(): Unit = {
+    val future = predictionDataCollection.remove(BSONDocument())
+    Await.result(future, Duration.Inf)
+  }
+
+  private def clearAllPortfolio(): Unit = {
+    val future = portfolioDataCollection.remove(BSONDocument())
+    Await.result(future, Duration.Inf)
+  }
+
+
+  def clearAll(): Unit = {
+    clearAllPortfolio
+    clearAllPrediction
+  }
 }
 
 /**
