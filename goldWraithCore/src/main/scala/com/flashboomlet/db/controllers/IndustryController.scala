@@ -536,6 +536,11 @@ class IndustryController
     Await.result(thirteen, Duration.Inf)
   }
 
+
+
+  def clearAll(): Unit = {
+    clearAllIndustries
+  }
 }
 
 

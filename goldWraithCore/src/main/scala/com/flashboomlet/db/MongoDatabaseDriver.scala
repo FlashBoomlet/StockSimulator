@@ -1,14 +1,15 @@
 package com.flashboomlet.db
 
 import com.flashboomlet.data.StockListing
-import com.flashboomlet.data.StockData
+import com.flashboomlet.db.controllers.BankAccountController
+import com.flashboomlet.db.controllers.IndustryController
+import com.flashboomlet.db.controllers.MarketController
+import com.flashboomlet.db.controllers.PortfolioController
 import com.flashboomlet.db.implicits.MongoImplicits
 import com.typesafe.scalalogging.LazyLogging
 import reactivemongo.api.BSONSerializationPack.Writer
 import reactivemongo.api.DefaultDB
 import reactivemongo.api.FailoverStrategy
-import reactivemongo.api.MongoConnection.ParsedURI
-import reactivemongo.api.MongoConnectionOptions
 import reactivemongo.api.MongoDriver
 import reactivemongo.api.collections.bson.BSONCollection
 import reactivemongo.bson.BSONDateTime
@@ -19,7 +20,7 @@ import reactivemongo.bson.BSONString
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
-import scala.util.Random
+import scala.io.StdIn
 import scala.util.Success
 
 
@@ -211,6 +212,23 @@ class MongoDatabaseDriver
       case Some(m) => logger.error(s"Failed to insert and create new id into $coll")
       case _ => // logging needed we won
     }
+  }
+
+  def clearAll(): Unit = {
+    val bac = new BankAccountController
+    val ic = new IndustryController
+    val pc = new PortfolioController
+
+
+    clearAllListings()
+    bac.clearAll()
+    ic.clearAll()
+    pc.clearAll()
+  }
+
+  def clearPortfolio(): Unit = {
+    val pc = new PortfolioController
+    pc.clearAll()
   }
 }
 

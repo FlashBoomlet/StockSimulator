@@ -1,9 +1,14 @@
 package com.flashboomlet.controls
 
 import com.flashboomlet.charts.GraphStock
+import com.flashboomlet.data.BankAccount
+import com.flashboomlet.db.MongoDatabaseDriver
+import com.flashboomlet.db.controllers.MarketController
 import com.flashboomlet.portfolio.PortfolioInfo
 import com.flashboomlet.portfolio.Trade
 import com.flashboomlet.stocks.MarketInfo
+
+import scala.io.StdIn
 
 /**
   * Created by ttlynch on 3/29/17.
@@ -15,6 +20,53 @@ class Controls {
   val marketInfo = new MarketInfo
   val grapher = new GraphStock
   val generalInfo = new GeneralInformation
+  val bankAccountInfo = new BankTeller
+  val mdd = new MongoDatabaseDriver
+
+
+  /**
+    * Bank is a function to interact with ones bank account
+    *
+    * Usage:
+    *   uid=UserID
+    *   deposit=[Amount to deposit] optional
+    *   withdraw=[Amount to withdraw] optional
+    *   account=[checking/saving] requried with either deposit or withdraw
+    *
+    * @param options
+    */
+  def bank(options: Array[String]): Unit = {
+    if(options.head == "help"){
+      ShellHelp.getBankUsage()
+    }
+    val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last
+    val deposit = options.filter(p => p.toLowerCase().contains("deposit")).head.split("=").last.toDouble
+    val withdraw = options.filter(p => p.toLowerCase().contains("withdraw")).head.split("=").last.toDouble
+    val account = options.filter(p => p.toLowerCase().contains("account")).head.split("=").last
+
+    bankAccountInfo.bankTeller(uid, deposit, withdraw, account)
+  }
+
+  /**
+    * Account is a function to create a bank account
+    *
+    * Usage:
+    *   uid=UserID
+    *   first=[first name]
+    *   last=[last name]
+    *
+    * @param options
+    */
+  def account(options: Array[String]): Unit = {
+    if(options.head == "help"){
+      ShellHelp.getAccountUsage()
+    }
+    val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last
+    val first = options.filter(p => p.toLowerCase().contains("first")).head.split("=").last
+    val last = options.filter(p => p.toLowerCase().contains("last")).head.split("=").last
+
+    bankAccountInfo.createAccount(uid, first, last)
+  }
 
   /**
     * Get Market Prices is a function to get various data
@@ -33,6 +85,9 @@ class Controls {
     * @param options
     */
   def getMarketPrices(options: Array[String]): Unit = {
+    if(options.head == "help"){
+      ShellHelp.getMarketUsage()
+    }
     val start = options.filter(p => p.toLowerCase().contains("start")).head.split("=").last
     val end = options.filter(p => p.toLowerCase().contains("end")).head.split("=").last
     val option = options.filter(p => p.toLowerCase().contains("option")).head.split("=").last
@@ -53,6 +108,9 @@ class Controls {
     * @param options
     */
   def getPortfolio(options: Array[String]): Unit = {
+    if(options.head == "help"){
+      ShellHelp.getPortfolioUsage()
+    }
     val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last.toInt
     if(options.map(s => s.toLowerCase()).exists(s => s.contains("getuserids"))){
       portfolio.getUsers()
@@ -74,6 +132,9 @@ class Controls {
     * @param options
     */
   def getQuote(options: Array[String]): Unit = {
+    if(options.head == "help"){
+      ShellHelp.getQuoteUsage()
+    }
     val market = options.filter(p => p.toLowerCase().contains("market")).head.split("=").last
     val symbol = options.filter(p => p.toLowerCase().contains("symbol")).head.split("=").last
 
@@ -94,6 +155,9 @@ class Controls {
     * @param options
     */
   def tradeStock(options: Array[String]): Unit = {
+    if(options.head == "help"){
+      ShellHelp.getTradeUsage()
+    }
     val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last
     val market = options.filter(p => p.toLowerCase().contains("market")).head.split("=").last
     val symbol = options.filter(p => p.toLowerCase().contains("symbol")).head.split("=").last
@@ -124,6 +188,9 @@ class Controls {
     * @param options
     */
   def graphStock(options: Array[String]): Unit = {
+    if(options.head == "help"){
+      ShellHelp.getGraphUsage()
+    }
     val symbol = options.filter(p => p.toLowerCase().contains("symbol")).head.split("=").last
     val start = options.filter(p => p.toLowerCase().contains("start")).head.split("=").last.toLong
     val end = options.filter(p => p.toLowerCase().contains("end")).head.split("=").last.toLong
@@ -139,4 +206,24 @@ class Controls {
   def getSystemInformation(options: Array[String]): Unit = {
       // generalInfo.x
   }
+
+  def clearAll(): Unit = {
+    println("\n*******************\n\nWarning!!!\n\n*******************\n")
+    var line = StdIn.readLine("Are you sure you want to clear all data? (yes/no):")
+    if(line == "yes") {
+      println("\n*******************\n\nWarning!!!\n\n*******************\n")
+      var line = StdIn.readLine("Please confirm that you'd like to delete all your data? (yes/no):")
+      if(line == "yes"){
+        mdd.clearAll()
+      }
+    }
+  }
+
+  def clearPortfolio(): Unit = {
+    println("\n*******************\n\nWarning!!!\n\n*******************\n")
+    var line = StdIn.readLine("Are you sure you want to clear your portfolio? (yes/no):")
+    if(line == "yes") mdd.clearPortfolio()
+  }
+
+
 }
