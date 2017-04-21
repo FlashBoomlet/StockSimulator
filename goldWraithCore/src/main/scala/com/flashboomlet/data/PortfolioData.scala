@@ -4,7 +4,7 @@ package com.flashboomlet.data
   * Created by ttlynch on 10/29/16.
   */
 case class PortfolioData(
-  uid: Int,
+  uid: String,
   transactionId: Long,
   market: String,
   symbol: String,

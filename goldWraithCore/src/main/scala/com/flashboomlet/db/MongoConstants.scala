@@ -40,6 +40,9 @@ trait MongoConstants {
   final val PredictionDataCollection = "predictionDataCollection"
   final val PortfolioDataCollection = "portfolioDataCollection"
 
+  final val BankAccountCollection = "bankAccountCollection"
+  final val BankAccountTransactionCollection = "bankAccountTransactionCollection"
+
 
   /**
     * String constants used in the conversation state collection model schema
@@ -166,7 +169,7 @@ trait MongoConstants {
     final val Uid = "uid"
 
     /* String constant for the `transactionId` field in a MongoDB PortfolioData document */
-    final val TransactionId = "transactionId"
+    final val TransactionId = "transactionid"
 
     /* String constant for the `market` field in a MongoDB PortfolioData document */
     final val Market = "market"
@@ -178,23 +181,69 @@ trait MongoConstants {
     final val Units = "units"
 
     /* String constant for the `purchaseDate` field in a MongoDB PortfolioData document */
-    final val PurchaseDate = "purchaseDate"
+    final val PurchaseDate = "purchasedate"
 
     /* String constant for the `purchasePrice` field in a MongoDB PortfolioData document */
-    final val PurchasePrice = "purchasePrice"
+    final val PurchasePrice = "purchaseprice"
 
     /* String constant for the `sellDate` field in a MongoDB PortfolioData document */
-    final val SellDate = "sellDate"
+    final val SellDate = "selldate"
 
     /* String constant for the `sellPrice` field in a MongoDB PortfolioData document */
-    final val SellPrice = "sellPrice"
+    final val SellPrice = "sellprice"
 
     /* String constant for the `contractType` field in a MongoDB PortfolioData document */
-    final val ContractType = "contractType"
+    final val ContractType = "contracttype"
 
     /* String constant for the `contractEndDate` field in a MongoDB PortfolioData document */
-    final val ContractEndDate = "contractEndDate"
+    final val ContractEndDate = "contractenddate"
   }
+
+  object BankAccountConstants {
+
+    /* String constant for the `accountnumber` field in a MongoDB BankAccount document */
+    final val AccountNumber = "accountnumber"
+
+    /* String constant for the `uid` field in a MongoDB BankAccount document */
+    final val Uid = "uid"
+
+    /* String constant for the `first` field in a MongoDB BankAccount document */
+    final val First = "first"
+
+    /* String constant for the `last` field in a MongoDB BankAccount document */
+    final val Last = "last"
+
+    /* String constant for the `checking` field in a MongoDB BankAccount document */
+    final val Checking = "checking"
+
+    /* String constant for the `saving` field in a MongoDB BankAccount document */
+    final val Saving = "saving"
+  }
+
+
+  object BankAccountTransactionConstants {
+    /* String constant for the `accountNumber` field in a MongoDB BankAccountTransaction document */
+    final val AccountNumber = "accountnumber"
+
+    /* String constant for the `date` field in a MongoDB BankAccountTransaction document */
+    final val Date = "date"
+
+    /* String constant for the `transactionType` field in a MongoDB BankAccountTransaction document */
+    final val TransactionType = "transactiontype"
+
+    /* String constant for the `description` field in a MongoDB BankAccountTransaction document */
+    final val Description = "description"
+
+    /* String constant for the `debit` field in a MongoDB BankAccountTransaction document */
+    final val Debit = "debit"
+
+    /* String constant for the `credit` field in a MongoDB BankAccountTransaction document */
+    final val Credit = "credit"
+
+    /* String constant for the `balance` field in a MongoDB BankAccountTransaction document */
+    final val Balance = "balance"
+  }
+
 
 
   /**

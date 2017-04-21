@@ -20,7 +20,7 @@ trait PortfolioDataImplicits extends MongoConstants {
   implicit object PortfolioDataWriter extends BSONDocumentWriter[PortfolioData] {
 
     override def write(pd: PortfolioData): BSONDocument = BSONDocument(
-      PortfolioDataConstants.Uid -> BSONInteger(pd.uid),
+      PortfolioDataConstants.Uid -> BSONString(pd.uid),
       PortfolioDataConstants.TransactionId -> BSONLong(pd.transactionId),
       PortfolioDataConstants.Market -> BSONString(pd.market),
       PortfolioDataConstants.Symbol -> BSONString(pd.symbol),
@@ -39,7 +39,7 @@ trait PortfolioDataImplicits extends MongoConstants {
   implicit object PortfolioDataReader extends BSONDocumentReader[PortfolioData] {
 
     override def read(doc: BSONDocument): PortfolioData = {
-      val uid = doc.getAs[Int](PortfolioDataConstants.Uid).get
+      val uid = doc.getAs[String](PortfolioDataConstants.Uid).get
       val transactionId = doc.getAs[Long](PortfolioDataConstants.TransactionId).get
       val market = doc.getAs[String](PortfolioDataConstants.Market).get
       val symbol = doc.getAs[String](PortfolioDataConstants.Symbol).get
