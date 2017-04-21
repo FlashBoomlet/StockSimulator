@@ -18,6 +18,7 @@ trait PredictionDataImplicits extends MongoConstants {
   implicit object PredictionDataWriter extends BSONDocumentWriter[PredictionData] {
 
     override def write(pd: PredictionData): BSONDocument = BSONDocument(
+      PredictionDataConstants.Uid -> BSONString(pd.uid),
       PredictionDataConstants.TransactionId -> BSONLong(pd.transactionId),
       PredictionDataConstants.ContractType -> BSONString(pd.contractType),
       PredictionDataConstants.SafetyLevel -> BSONLong(pd.safetyLevel),
@@ -33,6 +34,7 @@ trait PredictionDataImplicits extends MongoConstants {
   implicit object PredictionDataReader extends BSONDocumentReader[PredictionData] {
 
     override def read(doc: BSONDocument): PredictionData = {
+      val uid = doc.getAs[String](PredictionDataConstants.Uid).get
       val transactionId = doc.getAs[Long](PredictionDataConstants.TransactionId).get
       val contractType = doc.getAs[String](PredictionDataConstants.ContractType).get
       val safetyLevel = doc.getAs[Long](PredictionDataConstants.SafetyLevel).get
@@ -42,6 +44,7 @@ trait PredictionDataImplicits extends MongoConstants {
       val strategy = doc.getAs[String](PredictionDataConstants.Strategy).get
 
       PredictionData(
+        uid = uid,
         transactionId = transactionId,
         contractType = contractType,
         safetyLevel = safetyLevel,

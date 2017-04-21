@@ -8,3 +8,5 @@ extends StockDataImplicits
 with StockListingImplicits
 with PredictionDataImplicits
 with PortfolioDataImplicits
+with BankAccountImplicits
+with BankAccountTransactionImplicits
