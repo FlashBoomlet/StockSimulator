@@ -14,6 +14,8 @@ object Buy {
   val mc = new MarketController
   val du = new DateUtil
 
+  // contract=[type of contract (put/call)]
+
   def trade(uid: String, market: String, symbol: String, units: Int, contract: String): Int = {
     // Magic to figure out contract end date.
     val currentStock = mc.getStock(symbol)
