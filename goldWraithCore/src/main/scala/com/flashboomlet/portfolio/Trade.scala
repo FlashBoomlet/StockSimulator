@@ -7,8 +7,8 @@ package com.flashboomlet.portfolio
 class Trade {
 
 
-  def sell(uid: Int, market: String, symbol: String, units: Int, contract: String): Unit = {
-    val trade = Sell.trade(uid: Int, market: String, symbol: String, units: Int, contract: String)
+  def sell(uid: String, market: String, symbol: String, units: Int, contract: String): Unit = {
+    val trade = Sell.trade(uid, market, symbol, units, contract)
     if(trade == 1){
       println(s"Your sale for: $symbol has been made. ")
     } else if(trade == 2){
@@ -18,8 +18,8 @@ class Trade {
     }
   }
 
-  def buy(uid: Int, market: String, symbol: String, units: Int, contract: String): Unit = {
-    val trade = Buy.trade(uid: Int, market: String, symbol: String, units: Int, contract: String)
+  def buy(uid: String, market: String, symbol: String, units: Int, contract: String): Unit = {
+    val trade = Buy.trade(uid, market, symbol, units, contract)
     if(trade == 1){
       println(s"Your purchase for: $symbol has been made. ")
     } else if(trade == 2){
