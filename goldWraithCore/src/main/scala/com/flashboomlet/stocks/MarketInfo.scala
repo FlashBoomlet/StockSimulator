@@ -11,16 +11,16 @@ class MarketInfo {
   val mc = new MarketController
   val du = new DateUtil
 
-  def getQuote(market: String, symbol: String): Unit = {
+  def getQuote(market: String, symbol: String): String = {
     val stock = mc.getStock(symbol)
-    println(s"Raw stock: $stock")
-    println(s"\n${stock.symbol} at ${stock.time}:")
-    println(s"\tprice: ${stock.lastTrade}")
-    println(s"\task: ${stock.ask}\tbid: ${stock.bid}")
-    println(s"\trange: [${stock.dayLow}, ${stock.dayHigh}]")
-    println(s"\tvolume: ${stock.volume}")
-    println(s"\topen: ${stock.open}")
-    println(s"\texchange: ${stock.exchange}\n")
+    (
+    (s"\n${stock.symbol} at ${stock.time}:\n")
+    + (s"\tprice: ${stock.lastTrade}\n")
+    + (s"\task: ${stock.ask}\tbid: ${stock.bid}\n")
+    + (s"\trange: [${stock.dayLow}, ${stock.dayHigh}]\n")
+    + (s"\tvolume: ${stock.volume}\n")
+    + (s"\topen: ${stock.open}\n")
+    + (s"\texchange: ${stock.exchange}\n\n"))
   }
 
   /**
@@ -30,7 +30,7 @@ class MarketInfo {
     * mv: Most Volatile
     *
     */
-  def getMarketInfo(start: String, end: String, option: String): Unit = {
+  def getMarketInfo(start: String, end: String, option: String): String = {
     val tmpStart = start.split("/")
     val sMonth = tmpStart.head.toInt
     val sDay = tmpStart(1).toInt
@@ -51,27 +51,27 @@ class MarketInfo {
       getBiggestLosers(startDate, endDate)
     } else if(option == "mv"){
       getMostVolatile(startDate, endDate)
-    } else println(s"Well it looks like you submitted an invalid option: $option")
+    } else (s"Well it looks like you submitted an invalid option: $option\n")
   }
 
-  private def getMostActive(start: Long, end: Long): Unit = {
+  private def getMostActive(start: Long, end: Long): String = {
     println("Most Active stocks:")
-    mc.getOverallMostActive(start, end).foreach(println)
+    mc.getOverallMostActive(start, end).flatMap(s => s.toString + "\n").toString
   }
 
-  private def getMostVolatile(start: Long, end: Long): Unit = {
+  private def getMostVolatile(start: Long, end: Long): String = {
     println("Most Active Volatile:")
-    mc.getOverallMostVolatile(start, end).foreach(println)
+    mc.getOverallMostVolatile(start, end).flatMap(s => s.toString + "\n").toString
   }
 
-  private def getBiggestGainers(start: Long, end: Long): Unit = {
+  private def getBiggestGainers(start: Long, end: Long): String = {
     println("Most Biggest Gainers:")
-    mc.getOverallBiggestGainers(start, end).foreach(println)
+    mc.getOverallBiggestGainers(start, end).flatMap(s => s.toString + "\n").toString
   }
 
-  private def getBiggestLosers(start: Long, end: Long): Unit = {
+  private def getBiggestLosers(start: Long, end: Long): String = {
     println("Most Biggest Losers:")
-    mc.getOverallBiggestLosers(start, end).foreach(println)
+    mc.getOverallBiggestLosers(start, end).flatMap(s => s.toString + "\n").toString
   }
 
 }

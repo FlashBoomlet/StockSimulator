@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.flashboomlet.actors.AkkaConstants
 import com.flashboomlet.actors.StockGathererTickActor
+import com.flashboomlet.controls.StockShell
 import com.flashboomlet.data.DateUtil
 import com.flashboomlet.db.MongoDatabaseDriver
 import com.flashboomlet.db.controllers.IndustryController
@@ -49,6 +50,10 @@ object Driver  extends LazyLogging {
      * Pull in historical data from last pulled date to current.
      * Start pulling in data at 4pm UTC and there after every 24 hours.
      */
+
+    // Open up stock shell
+    StockShell.StockShell()
+
     val du = new DateUtil
     val sd = new StockDataGatherer
     val lg = new ListingGatherer
@@ -69,7 +74,7 @@ object Driver  extends LazyLogging {
     // Gather Historical Data
     val reenableFinish = du.getNowInMillis
     logger.info(s"It took: ${reenableFinish-fetchIndustriesFinish} milliseconds to re-enable all stocks")
-    sd.gatherDataHistory()
+    // sd.gatherDataHistory()
     val historicalFinish = du.getNowInMillis
     logger.info(s"It took: ${historicalFinish-reenableFinish} milliseconds to update historical data")
 

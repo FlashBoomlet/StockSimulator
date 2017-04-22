@@ -35,9 +35,9 @@ class Controls {
     *
     * @param options
     */
-  def bank(options: Array[String]): Unit = {
+  def bank(options: Array[String]): String = {
     if(options.head == "help"){
-      ShellHelp.getBankUsage()
+      return ShellHelp.getBankUsage()
     }
     val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last
     val deposit = if(options.exists(p => p.toLowerCase().contains("deposit"))) {
@@ -46,7 +46,9 @@ class Controls {
     val withdraw = if(options.exists(p => p.toLowerCase().contains("withdraw"))) {
       options.filter(p => p.toLowerCase().contains("withdraw")).head.split("=").last.toDouble
     } else 0
-    val account = options.filter(p => p.toLowerCase().contains("account")).head.split("=").last
+    val account = if(options.exists(p => p.toLowerCase().contains("account"))) {
+      options.filter(p => p.toLowerCase().contains("account")).head.split("=").last
+    } else ""
 
     bankAccountInfo.bankTeller(uid, deposit, withdraw, account)
   }
@@ -61,9 +63,9 @@ class Controls {
     *
     * @param options
     */
-  def account(options: Array[String]): Unit = {
+  def account(options: Array[String]): String = {
     if(options.head == "help"){
-      ShellHelp.getAccountUsage()
+      return ShellHelp.getAccountUsage()
     }
     val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last
     val first = options.filter(p => p.toLowerCase().contains("first")).head.split("=").last
@@ -88,9 +90,9 @@ class Controls {
     *
     * @param options
     */
-  def getMarketPrices(options: Array[String]): Unit = {
+  def getMarketPrices(options: Array[String]): String = {
     if(options.head == "help"){
-      ShellHelp.getMarketUsage()
+      return ShellHelp.getMarketUsage()
     }
     val start = options.filter(p => p.toLowerCase().contains("start")).head.split("=").last
     val end = options.filter(p => p.toLowerCase().contains("end")).head.split("=").last
@@ -111,14 +113,14 @@ class Controls {
     *
     * @param options
     */
-  def getPortfolio(options: Array[String]): Unit = {
+  def getPortfolio(options: Array[String]): String = {
     if(options.head == "help"){
-      ShellHelp.getPortfolioUsage()
+      return ShellHelp.getPortfolioUsage()
     }
-    val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last
     if(options.map(s => s.toLowerCase()).exists(s => s.contains("getuserids"))){
       portfolio.getUsers()
     } else {
+      val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last
       portfolio.getInformation(uid)
     }
   }
@@ -135,9 +137,9 @@ class Controls {
     *
     * @param options
     */
-  def getQuote(options: Array[String]): Unit = {
+  def getQuote(options: Array[String]): String = {
     if(options.head == "help"){
-      ShellHelp.getQuoteUsage()
+      return ShellHelp.getQuoteUsage()
     }
     val market = options.filter(p => p.toLowerCase().contains("market")).head.split("=").last
     val symbol = options.filter(p => p.toLowerCase().contains("symbol")).head.split("=").last
@@ -158,9 +160,9 @@ class Controls {
     *
     * @param options
     */
-  def tradeStock(options: Array[String]): Unit = {
+  def tradeStock(options: Array[String]): String = {
     if(options.head == "help"){
-      ShellHelp.getTradeUsage()
+      return ShellHelp.getTradeUsage()
     }
     val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last
     val market = options.filter(p => p.toLowerCase().contains("market")).head.split("=").last
@@ -174,7 +176,7 @@ class Controls {
     } else if(action == "buy") {
       trader.buy(uid, market, symbol, units, contract)
     } else {
-      println("Your request was not processed!")
+      ("Your request was not processed!\n")
     }
   }
 
@@ -186,9 +188,9 @@ class Controls {
     *   uid=[user id]
     *   transactionid=[transactionID]
     */
-  def sell(options: Array[String]): Unit = {
+  def sell(options: Array[String]): String = {
     if(options.head == "help"){
-      ShellHelp.getTradeUsage()
+      return ShellHelp.getTradeUsage()
     }
     val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last
     val transactionid = options.filter(p => p.toLowerCase().contains("transactionid")).head.split("=").last.toLong
@@ -209,15 +211,16 @@ class Controls {
     *
     * @param options
     */
-  def graphStock(options: Array[String]): Unit = {
+  def graphStock(options: Array[String]): String = {
     if(options.head == "help"){
-      ShellHelp.getGraphUsage()
+      return ShellHelp.getGraphUsage()
     }
     val symbol = options.filter(p => p.toLowerCase().contains("symbol")).head.split("=").last
     val start = options.filter(p => p.toLowerCase().contains("start")).head.split("=").last.toLong
     val end = options.filter(p => p.toLowerCase().contains("end")).head.split("=").last.toLong
 
     grapher.GraphStock(symbol, start, end)
+    ""
   }
 
   /**
@@ -225,11 +228,13 @@ class Controls {
     *
     * @param options
     */
-  def getSystemInformation(options: Array[String]): Unit = {
+  def getSystemInformation(options: Array[String]): String = {
       // generalInfo.x
+      ""
   }
 
-  def clearAll(): Unit = {
+  def clearAll(): String = {
+  /*
     println("\n*******************\n\nWarning!!!\n\n*******************\n")
     var line = StdIn.readLine("Are you sure you want to clear all data? (yes/no):")
     if(line == "yes") {
@@ -239,12 +244,18 @@ class Controls {
         mdd.clearAll()
       }
     }
+    */
+    ""
   }
 
-  def clearPortfolio(): Unit = {
+  def clearPortfolio(): String = {
+    /*
     println("\n*******************\n\nWarning!!!\n\n*******************\n")
     var line = StdIn.readLine("Are you sure you want to clear your portfolio? (yes/no):")
-    if(line == "yes") mdd.clearPortfolio()
+    if(line == "yes")
+    */
+    mdd.clearPortfolio()
+    ""
   }
 
 

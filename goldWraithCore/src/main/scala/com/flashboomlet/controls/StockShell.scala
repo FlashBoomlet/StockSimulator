@@ -1,5 +1,7 @@
 package com.flashboomlet.controls
 
+import com.flashboomlet.gui.Frame
+
 import scala.io.StdIn
 
 /**
@@ -13,13 +15,18 @@ object StockShell {
   def main(args: Array[String]) {
     StockShell()
   }
-  
+
+
   def StockShell(): Unit = {
+    val frame = new Frame()
+    frame.visible = true
+    /*
     var line = ""
     while ({line = StdIn.readLine("stockShell:"); line != null}) {
       // Continuous loop
       parseLine(line)
     }
+    */
   }
 
   def parseLine(input: String): String = {
@@ -28,7 +35,7 @@ object StockShell {
     val options = tokenized.takeRight(tokenized.length-1)
 
 
-    request match {
+    val rtn: String = request match {
       case "portfolio" => controls.getPortfolio(options)
       case "quote" => controls.getQuote(options)
       case "graph" => controls.graphStock(options)
@@ -42,7 +49,7 @@ object StockShell {
       case "clear" => controls.clearPortfolio()
       case _ => ShellHelp.allHelp()
     }
-    return ""
+    rtn
   }
 
 

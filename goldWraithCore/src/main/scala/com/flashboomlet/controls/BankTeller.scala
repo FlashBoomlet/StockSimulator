@@ -9,59 +9,60 @@ class BankTeller {
 
   val bai = new BankAccountInfo
 
-  def bankTeller(uid: String, deposit: Double, withdraw: Double, account: String): Unit = {
+  def bankTeller(uid: String, deposit: Double, withdraw: Double, account: String): String = {
     if(bai.uidExist(uid)){
       if(deposit > 0) {
         // call to deposit
         bai.deposit(uid, deposit, account)
-        println(s"You successfully deposited $deposit in $account")
+        (s"You successfully deposited $deposit in $account\n")
       } else if(withdraw > 0) {
         // call to withdraw
         if(bai.withdraw(uid, withdraw, account)){
-          println(s"You successfully withdrew $withdraw from $account")
+          (s"You successfully withdrew $withdraw from $account\n")
         } else {
-          println(s"Sorry, you do not have sufficient funds in that account.")
+          (s"Sorry, you do not have sufficient funds in that account.\n")
         }
       }
       // call to get info on the account
       printAccount(bai.accountInfo(uid))
 
     } else {
-      println(s"Sorry, but there is no account for $uid")
+      (s"Sorry, but there is no account for $uid\n")
     }
   }
 
-  def createAccount(uid: String, first: String, last: String): Unit = {
+  def createAccount(uid: String, first: String, last: String): String = {
     // Create a user account
     if(!bai.uidExist(uid)){
       val account = bai.createAccount(uid, first, last)
-      println(s"Hello, you successfully created an account. " +
-      s"Your account number is:\n\t${account.accountNumber}")
+      (s"Hello, you successfully created an account. " +
+      s"Your account number is:\n\t${account.accountNumber}\n")
     } else {
-      println(s"Sorry, but there is already an account for $uid")
+      (s"Sorry, but there is already an account for $uid\n")
     }
   }
 
 
-  def printAccount(account: BankAccount): Unit = {
+  def printAccount(account: BankAccount): String = {
     // Print the Bank Account information in a nice clean format.
-    println(s"Account information for ${account.uid}:")
-    println(s"\tname: ${account.first} ${account.last}")
-    println(s"\taccount number: ${account.first}")
-    println(s"\tchecking: ${account.checking}")
-    println(s"\tsaving: ${account.saving}")
+    ((s"Account information for ${account.uid}:\n")
+    + (s"\tname: ${account.first} ${account.last}\n")
+    + (s"\taccount number: ${account.first}\n")
+    + (s"\tchecking: ${account.checking}\n")
+    + (s"\tsaving: ${account.saving}\n"))
   }
 
-  def transferFunds(uid: String, fromAccount: String, amount: Double): Unit = {
+  def transferFunds(uid: String, fromAccount: String, amount: Double): String = {
     // For future implementation
     if(bai.uidExist(uid)){
       val trans = bai.transferFunds(uid, fromAccount, amount)
       if(trans){
+        ""
       } else {
-        println(s"Sorry, you do not have sufficient funds in that account.")
+        (s"Sorry, you do not have sufficient funds in that account.\n")
       }
     } else {
-      println("Sorry, we could not find an account on file for you.")
+      ("Sorry, we could not find an account on file for you.\\n")
     }
   }
 

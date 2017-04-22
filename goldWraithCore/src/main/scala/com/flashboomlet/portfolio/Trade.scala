@@ -7,37 +7,37 @@ package com.flashboomlet.portfolio
 class Trade {
 
 
-  def sell(uid: String, market: String, symbol: String, units: Int, contract: String): Unit = {
+  def sell(uid: String, market: String, symbol: String, units: Int, contract: String): String = {
     val trade = Sell.trade(uid, market, symbol, units, contract)
     if(trade == 1){
-      println(s"Your sale for: $symbol has been made. ")
+      (s"Your sale for: $symbol has been made. \n")
     } else if(trade == 2){
-      println("Sorry, the market is not yet open.")
+      ("Sorry, the market is not yet open.\\n")
     } else if(trade == 3){
-      println("Sorry, you don't have that many units available to sell")
+      ("Sorry, you don't have that many units available to sell\\n")
     } else {
-      println(s"Your sale for: $symbol has NOT been made.")
+      (s"Your sale for: $symbol has NOT been made.\n")
     }
   }
 
 
-  def sell(uid: String, transactionID: Long): Unit = {
+  def sell(uid: String, transactionID: Long): String = {
     if(Sell.validContract(transactionID)){
       val trade = Sell.trade(uid, transactionID)
-      println(s"Your sale has been made. ")
+      (s"Your sale has been made. \n")
     } else {
-      println(s"Your sale has NOT been made.")
+      (s"Your sale has NOT been made.\n")
     }
   }
 
-  def buy(uid: String, market: String, symbol: String, units: Int, contract: String): Unit = {
+  def buy(uid: String, market: String, symbol: String, units: Int, contract: String): String = {
     val trade = Buy.trade(uid, market, symbol, units, contract)
     if(trade == 1){
-      println(s"Your purchase for: $symbol has been made. ")
+      (s"Your purchase for: $symbol has been made. \n")
     } else if(trade == 2){
-      println("Sorry, the market is not yet open.")
+      ("Sorry, the market is not yet open.\\n")
     } else {
-      println(s"Your purchase for: $symbol has NOT been made.")
+      (s"Your purchase for: $symbol has NOT been made.\n")
     }
   }
 

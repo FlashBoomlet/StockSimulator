@@ -5,124 +5,142 @@ package com.flashboomlet.controls
   */
 object ShellHelp {
 
-  def allHelp(): Unit = {
-    println("\nStock Shell Help:\n")
-
-    println("stockShell:[request] [options...]")
-    println("\tEx:\tstockShell:portfolio uid=ttlynch\n")
-    println("stockShell:[request] help")
-    println("\tEx:\tstockShell:portfolio help\n\n")
-    println("\n")
-    getMarketUsage()
-    println("\n")
-    getPortfolioUsage()
-    println("\n")
-    getQuoteUsage()
-    println("\n")
-    getTradeUsage()
-    println("\n")
-    getSellUsage()
-    println("\n")
-    getGraphUsage()
-    println("\n")
-    getBankUsage()
-    println("\n")
-    getAccountUsage()
-    println("\n\nquote market=NYSE symbol=AIR\n\n")
+  def allHelp(): String = {
+    ("\nStock Shell Help:\n\n"
+    + "stockShell:[request] [options...]\n"
+    + "\tEx:\tstockShell:portfolio uid=ttlynch\n\n"
+    + "stockShell:[request] help\n"
+    + "\tEx:\tstockShell:portfolio help\n\n\n"
+    + "\n\n"
+    + getMarketUsage()
+    + "\n\n"
+    + getPortfolioUsage()
+    + "\n\n"
+    + getQuoteUsage()
+    + "\n\n"
+    + getTradeUsage()
+    + "\n\n"
+    + getSellUsage()
+    + "\n\n"
+    + getGraphUsage()
+    + "\n\n"
+    + getBankUsage()
+    + "\n\n"
+    + getAccountUsage()
+    )
   }
 
 
-  def getMarketUsage(): Unit = {
-    println("Request: market")
-    println("\tGet various data on a market")
-    println("\tEx:\tstockShell:market start=04/01/17 end=04/07/2017 option=ma")
-    println("Usage:")
-    println("\tstart=[mm/dd/yyyy]")
-    println("\tend=[mm/dd/yyyy] optional")
-    println("\toption=[option]")
-    println("\t\tOptions:")
-    println("\t\t\tma: Most Active")
-    println("\t\t\tbg: Biggest Gainers")
-    println("\t\t\tbl: Biggest Losers")
-    println("\t\t\tmv: Most Volatile")
+
+
+  def getMarketUsage(): String = {
+    (
+    "Request: market\n"
+    + "\tGet various data on a market\n"
+    + "\tEx:\tstockShell:market start=04/01/17 end=04/07/2017 option=ma\n"
+    + "Usage:\n"
+    + "\tstart=[mm/dd/yyyy]\n"
+    + "\tend=[mm/dd/yyyy] optional\n"
+    + "\toption=[option]\n"
+    + "\t\tOptions:\n"
+    + "\t\t\tma: Most Active\n"
+    + "\t\t\tbg: Biggest Gainers\n"
+    + "\t\t\tbl: Biggest Losers\n"
+    + "\t\t\tmv: Most Volatile\n"
+    )
   }
 
-  def getPortfolioUsage(): Unit = {
-    println("Request: portfolio")
-    println("\tGet users portfolio information")
-    println("\tEx:\tstockShell:portfolio uid=ttlynch")
-    println("Usage:")
-    println("\tuid=[user id]")
-    println("getUserIDs")
-    println("Future:")
-    println("\tfilter=[filter]")
+  def getPortfolioUsage(): String = {
+    (
+    "Request: portfolio\n"
+    + "\tGet users portfolio information\n"
+    + "\tEx:\tstockShell:portfolio uid=ttlynch\n"
+    + "Usage:\n"
+    + "\tuid=[user id]\n"
+    + "\n\tor\n\tgetUserIDs\n"
+    + "Future:\n"
+    + "\tfilter=[filter]\n"
+    )
   }
 
-  def getQuoteUsage(): Unit = {
-    println("Request: quote")
-    println("\t Get information on a stock symbol")
-    println("\tEx:\tstockShell:quote market=NYSE symbol=AIR")
-    println("Usage:")
-    println("\tmarket=[nyse/nasdaq]")
-    println("\tsymbol=[quote]")
-    println("Future:")
-    println("\tindicators=[indicators]")
+  def getQuoteUsage(): String = {
+    (
+    "Request: quote\n"
+    + "\t Get information on a stock symbol\n"
+    + "\tEx:\tstockShell:quote market=NYSE symbol=AIR\n"
+    + "Usage:\n"
+    + "\tmarket=[nyse/nasdaq]\n"
+    + "\tsymbol=[quote]\n"
+    + "Future:\n"
+    + "\tindicators=[indicators]\n"
+    )
   }
 
-  def getTradeUsage(): Unit  = {
-    println("Option: trade")
-    println("\tTrade a given stock based on the symbol")
-    println("\tEx:\tstockShell:trade uid=ttlynch market=NYSE symbol=AIR units=1 contract=call action=buy")
-    println("Usage:")
-    println("\tuid=[user id]")
-    println("\tmarket=[market]")
-    println("\tsymbol=[symbol]")
-    println("\tunits=[units]")
-    println("\tcontract=[type of contract (put/call)]")
-    println("\taction=[action (buy/sell)]")
+  def getTradeUsage(): String  = {
+    (
+    "Option: trade\n"
+    + "\tTrade a given stock based on the symbol\n"
+    + "\tEx:\tstockShell:trade uid=ttlynch market=NYSE symbol=AIR units=1 contract=call action=buy\n"
+    + "Usage:\n"
+    + "\tuid=[user id]\n"
+    + "\tmarket=[market]\n"
+    + "\tsymbol=[symbol]\n"
+    + "\tunits=[units]\n"
+    + "\tcontract=[type of contract (put/call)]\n"
+    + "\taction=[action (buy/sell)]\n"
+    )
   }
 
-  def getSellUsage(): Unit  = {
-    println("Option: sell")
-    println("\tTrade a given stock based on the symbol")
-    println("\tEx:\tstockShell:sell uid=ttlynch transactionid=2")
-    println("Usage:")
-    println("\tuid=[user id]")
-    println("\ttransactionid=[transactionID]")
+  def getSellUsage(): String  = {
+    (
+    "Option: sell\n"
+    + "\tTrade a given stock based on the symbol\n"
+    + "\tEx:\tstockShell:sell uid=ttlynch transactionid=2\n"
+    + "Usage:\n"
+    + "\tuid=[user id]\n"
+    + "\ttransactionid=[transactionID]\n"
+    )
   }
 
-  def getGraphUsage(): Unit = {
-    println("Option: graph")
-    println("\tGraph a stock on a pop up graph")
-    println("\tEx:\tstockShell:graph symbol=air start=04/01/17 end=04/07/2017")
-    println("Usage:")
-    println("\tsymbol=[symbol]")
-    println("\tstart=[start date]")
-    println("\tend=[end date]")
-    println("Future:")
-    println("\tindicators=[indicators]")
+  def getGraphUsage(): String = {
+    (
+    "Option: graph\n"
+    + "\tGraph a stock on a pop up graph\n"
+    + "\tEx:\tstockShell:graph symbol=air start=04/01/17 end=04/07/2017\n"
+    + "Usage:\n"
+    + "\tsymbol=[symbol]\n"
+    + "\tstart=[start date]\n"
+    + "\tend=[end date]\n"
+    + "Future:\n"
+    + "\tindicators=[indicators]\n"
+    )
   }
 
-  def getBankUsage(): Unit = {
-    println("Option: bank")
-    println("\tBank is a function to interact with ones bank account")
-    println("\tEx:\tstockShell:bank uid=ttlynch deposit=100000.50 account=checking")
-    println("Usage:")
-    println("\tuid=UserID")
-    println("\tdeposit=[Amount to deposit] optional")
-    println("\twithdraw=[Amount to withdraw] optional")
-    println("\taccount=[checking/saving] requried with either deposit or withdraw")
+  def getBankUsage(): String = {
+    (
+    "Option: bank\n"
+    + "\tBank is a function to interact with ones bank account\n"
+    + "\tEx:\tstockShell:bank uid=ttlynch deposit=100000.50 account=checking\n"
+    + "Usage:\n"
+    + "\tuid=UserID\n"
+    + "\tdeposit=[Amount to deposit] optional\n"
+    + "\twithdraw=[Amount to withdraw] optional\n"
+    + "\taccount=[checking/saving] requried with either deposit or withdraw\n"
+    )
   }
 
-  def getAccountUsage(): Unit = {
-    println("Option: account")
-    println("\tAccount is a function to create a bank account")
-    println("\tEx:\tstockShell:account uid=ttlynch first=tyler last=lynch")
-    println("Usage:")
-    println("\tuid=UserID")
-    println("\tfirst=[first name]")
-    println("\tlast=[last name]")
+  def getAccountUsage(): String = {
+    (
+    "Option: account\n"
+    + "\tAccount is a function to create a bank account\n"
+    + "\tEx:\tstockShell:account uid=ttlynch first=tyler last=lynch\n"
+    + "Usage:\n"
+    + "\tuid=UserID\n"
+    + "\tfirst=[first name]\n"
+    + "\tlast=[last name]\n"
+    )
   }
+
 
 
 }

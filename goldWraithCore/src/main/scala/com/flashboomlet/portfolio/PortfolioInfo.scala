@@ -13,20 +13,24 @@ class PortfolioInfo {
   val pc = new PortfolioController
 
   // Return list[PortfolioData] (not set or queue as order matters)
-  def getInformation(uid: String): Unit = {
+  def getInformation(uid: String): String = {
+
     if(uidValid(uid)){
-      println(s"\nPortfolio Data for $uid:")
-      println(s"\tActive Trades")
-      pc.getActiveInvestments(uid).foreach{ d =>
-        println(s"\t\t${d.symbol}: ${d.contractType} for ${d.units} shares: ${d.purchasePrice*d.units} USD (${d.transactionId})")
-      }
-      println(s"\tOutcomes")
-      // (Transaction ID, Symbol, Profit*, contractType, units)
-      pc.getInvestmentOutcomes(uid).foreach{ d =>
-        println(s"\t\t${d._2}: ${d._4} for ${d._5} shares: ${d._3} USD")
-      }
+      (
+        "\nPortfolio Data for " + uid + ":\n"
+        + "\n\tActive Trades\n"
+        + pc.getActiveInvestments(uid).foreach{ d =>
+          ("\t\t" + d.symbol + ": " + d.contractType+ " for " +d.units + " shares: "
+          + d.purchasePrice*d.units + " USD (" + d.transactionId + ")\n")
+        }
+        + "\n\tOutcomes\n"
+        // (Transaction ID, Symbol, Profit*, contractType, units)
+        + pc.getInvestmentOutcomes(uid).foreach{ d =>
+         "\t\t" + d._2 + ": " + d._4 + " for " + d._5 + " shares: " + d._3 + " USD\n"
+        }
+      )
     } else {
-      println("\nThe user ID that you entered is wrong.\n")
+      "\nThe user ID that you entered is wrong.\n\n"
     }
   }
 
@@ -36,12 +40,14 @@ class PortfolioInfo {
     else false
   }
 
-  def getUsers(): Unit = {
-    println("\nValid users are:")
-    pc.getAllPortfolioData.groupBy(s => s.uid).keys.foreach{ u =>
-      println(s"\tUser ID: $u")
-    }
-    println("\n")
+  def getUsers(): String = {
+    (
+      "\nValid users are:\n"
+      + pc.getAllPortfolioData.groupBy(s => s.uid).keys.foreach{ u =>
+        ("\tUser ID: " + u + "\n")
+      }
+      + "\n\n"
+    )
   }
 
   def getActiveInvestments(uid: String): List[PortfolioData] = {
