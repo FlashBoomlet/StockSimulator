@@ -64,7 +64,9 @@ with MongoImplicits {
   }
 
   def getAccountNumber: Long = {
-    getAllBankAccounts.map(s => s.accountNumber).max+1
+    val accounts = getAllBankAccounts.map(s => s.accountNumber)
+    if(accounts.nonEmpty) accounts.max+1
+    else 1
   }
 
   /**

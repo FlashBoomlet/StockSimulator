@@ -164,7 +164,9 @@ class PortfolioController
   }
 
   def getTransactionID(): Long = {
-    getAllPortfolioData.map(s => s.transactionId).max+1
+    val data = getAllPortfolioData.map(s => s.transactionId)
+    if(data.nonEmpty) data.max+1
+    else 1
   }
 
   /**

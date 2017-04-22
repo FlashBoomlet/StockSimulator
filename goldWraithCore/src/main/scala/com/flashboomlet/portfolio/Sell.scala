@@ -51,9 +51,9 @@ object Sell {
       contract.symbol,
       contract.units,
       contract.purchaseDate,
-      currentStock.lastTrade,
+      contract.purchasePrice,
       du.getNowInMillis,
-      contract.sellPrice,
+      currentStock.lastTrade,
       contract.contractType,
       contract.contractEndDate
     )

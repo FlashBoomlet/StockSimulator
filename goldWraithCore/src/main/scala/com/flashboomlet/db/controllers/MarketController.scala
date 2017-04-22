@@ -23,15 +23,15 @@ class MarketController
   val du = new DateUtil
 
   def getStock(symbol: String): StockData = {
-    val listing = databaseDriver.getUSStockListing(symbol)
+    val listing = databaseDriver.getUSStockListing(symbol.toUpperCase)
     val now = du.getNowInMillis
-    getData(listing.sector,listing.lastDataFetch,now, symbol,listing.exchange).maxBy(s => s.time)
+    getData(listing.sector,listing.lastDataFetch,now, symbol.toUpperCase,listing.exchange.toUpperCase).maxBy(s => s.time)
   }
 
   def getStock(symbol: String, exchange: String): StockData = {
-    val listing = databaseDriver.getUSStockListing(symbol, exchange)
+    val listing = databaseDriver.getUSStockListing(symbol.toUpperCase, exchange)
     val now = du.getNowInMillis
-    getData(listing.sector,listing.lastDataFetch,now, symbol,listing.exchange).maxBy(s => s.time)
+    getData(listing.sector,listing.lastDataFetch,now, symbol.toUpperCase,listing.exchange).maxBy(s => s.time)
   }
 
 
@@ -109,8 +109,8 @@ class MarketController
     sector match {
       case "Basic Industries" => industryController
         .getBasicIndustriesMain(startTime, endTime, symbol, exchange)
-      case "Capital Goods" => industryController
-        .getCapitalGoodsMain(startTime, endTime, symbol, exchange)
+      case "Capital Goods" =>
+        industryController.getCapitalGoodsMain(startTime, endTime, symbol, exchange)
       case "Consumer Durables" => industryController
         .getConsumerDurablesMain(startTime, endTime, symbol, exchange)
       case "Consumer Non-Durables" => industryController

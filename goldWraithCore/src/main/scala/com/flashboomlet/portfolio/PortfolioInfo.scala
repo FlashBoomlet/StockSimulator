@@ -18,7 +18,7 @@ class PortfolioInfo {
       println(s"\nPortfolio Data for $uid:")
       println(s"\tActive Trades")
       pc.getActiveInvestments(uid).foreach{ d =>
-        println(s"\t\t${d.symbol}: ${d.contractType} for ${d.units} shares: ${d.purchasePrice*d.units} USD")
+        println(s"\t\t${d.symbol}: ${d.contractType} for ${d.units} shares: ${d.purchasePrice*d.units} USD (${d.transactionId})")
       }
       println(s"\tOutcomes")
       // (Transaction ID, Symbol, Profit*, contractType, units)

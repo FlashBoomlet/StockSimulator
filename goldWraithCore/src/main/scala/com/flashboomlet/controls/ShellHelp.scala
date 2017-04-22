@@ -28,14 +28,14 @@ object ShellHelp {
     getBankUsage()
     println("\n")
     getAccountUsage()
-
+    println("\n\nquote market=NYSE symbol=AIR\n\n")
   }
 
 
   def getMarketUsage(): Unit = {
     println("Request: market")
     println("\tGet various data on a market")
-    println("\tEx:\tstockShell:portfolio start=04/01/17 end=04/07/2017 option=ma")
+    println("\tEx:\tstockShell:market start=04/01/17 end=04/07/2017 option=ma")
     println("Usage:")
     println("\tstart=[mm/dd/yyyy]")
     println("\tend=[mm/dd/yyyy] optional")
@@ -61,7 +61,7 @@ object ShellHelp {
   def getQuoteUsage(): Unit = {
     println("Request: quote")
     println("\t Get information on a stock symbol")
-    println("\tEx:\tstockShell:quote market=nasdaq symbol=tsla")
+    println("\tEx:\tstockShell:quote market=NYSE symbol=AIR")
     println("Usage:")
     println("\tmarket=[nyse/nasdaq]")
     println("\tsymbol=[quote]")
@@ -72,7 +72,7 @@ object ShellHelp {
   def getTradeUsage(): Unit  = {
     println("Option: trade")
     println("\tTrade a given stock based on the symbol")
-    println("\tEx:\tstockShell:trade uid=ttlynch market=nasdaq symbol=tsla units=1 contract=call action=buy")
+    println("\tEx:\tstockShell:trade uid=ttlynch market=NYSE symbol=AIR units=1 contract=call action=buy")
     println("Usage:")
     println("\tuid=[user id]")
     println("\tmarket=[market]")
@@ -85,7 +85,7 @@ object ShellHelp {
   def getSellUsage(): Unit  = {
     println("Option: sell")
     println("\tTrade a given stock based on the symbol")
-    println("\tEx:\tstockShell:sell uid=ttlynch transactionid=1")
+    println("\tEx:\tstockShell:sell uid=ttlynch transactionid=2")
     println("Usage:")
     println("\tuid=[user id]")
     println("\ttransactionid=[transactionID]")
@@ -94,7 +94,7 @@ object ShellHelp {
   def getGraphUsage(): Unit = {
     println("Option: graph")
     println("\tGraph a stock on a pop up graph")
-    println("\tEx:\tstockShell:graph symbol=tsla start=04/01/17 end=04/07/2017")
+    println("\tEx:\tstockShell:graph symbol=air start=04/01/17 end=04/07/2017")
     println("Usage:")
     println("\tsymbol=[symbol]")
     println("\tstart=[start date]")

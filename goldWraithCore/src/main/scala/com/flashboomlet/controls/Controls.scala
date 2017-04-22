@@ -40,8 +40,12 @@ class Controls {
       ShellHelp.getBankUsage()
     }
     val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last
-    val deposit = options.filter(p => p.toLowerCase().contains("deposit")).head.split("=").last.toDouble
-    val withdraw = options.filter(p => p.toLowerCase().contains("withdraw")).head.split("=").last.toDouble
+    val deposit = if(options.exists(p => p.toLowerCase().contains("deposit"))) {
+      options.filter(p => p.toLowerCase().contains("deposit")).head.split("=").last.toDouble
+    } else 0
+    val withdraw = if(options.exists(p => p.toLowerCase().contains("withdraw"))) {
+      options.filter(p => p.toLowerCase().contains("withdraw")).head.split("=").last.toDouble
+    } else 0
     val account = options.filter(p => p.toLowerCase().contains("account")).head.split("=").last
 
     bankAccountInfo.bankTeller(uid, deposit, withdraw, account)

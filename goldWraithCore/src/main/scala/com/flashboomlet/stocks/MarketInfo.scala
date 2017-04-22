@@ -13,7 +13,8 @@ class MarketInfo {
 
   def getQuote(market: String, symbol: String): Unit = {
     val stock = mc.getStock(symbol)
-    println(s"\n$symbol at ${stock.time}:")
+    println(s"Raw stock: $stock")
+    println(s"\n${stock.symbol} at ${stock.time}:")
     println(s"\tprice: ${stock.lastTrade}")
     println(s"\task: ${stock.ask}\tbid: ${stock.bid}")
     println(s"\trange: [${stock.dayLow}, ${stock.dayHigh}]")
