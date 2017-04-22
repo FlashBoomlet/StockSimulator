@@ -13,15 +13,19 @@ class Frame extends MainFrame with GUIConstants {
   minimumSize = minSize
   resizable = false
 
-  val plotArea = new Plot
+  // val plotArea = new Plot
+  val plotArea = Shell
   val tickerArea = new Ticker
   val watchListArea = new WatchList
-  val statsArea = new Stats
+  //val statsArea = new Stats
+  val statsArea = Help
   val controlsArea = new Controls
-  val plot = plotArea.getPlot()
+  // val plot = plotArea.getPlot()
+  val plot = plotArea.getShell()
   val ticker = tickerArea.getTicker()
   val watchList = watchListArea.getWatchList()
-  val stats = statsArea.getStats()
+  // val stats = statsArea.getStats()
+  val stats = statsArea.getHelp()
   val controls = controlsArea.getControls()
 
   contents = new BorderPanel {

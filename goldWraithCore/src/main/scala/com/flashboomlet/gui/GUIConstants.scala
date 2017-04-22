@@ -21,9 +21,9 @@ trait GUIConstants {
 
   val SlackSpace = GUIWidth - CenterWidth
 
-  val WestWidth = SlackSpace * 0.25
+  val WestWidth = SlackSpace * 0 // * 0.25
 
-  val EastWidth = SlackSpace * 0.75
+  val EastWidth = SlackSpace // * 0.75
 
   val NorthColor = Color.BLACK
 
