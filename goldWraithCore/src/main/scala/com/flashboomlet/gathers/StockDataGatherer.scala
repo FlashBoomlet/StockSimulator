@@ -82,7 +82,7 @@ class StockDataGatherer(
         }
       }
     }
-    logger.info(s"\n\n\n\n\n\nFinished!!!!\n\n\n\n\n")
+    // logger.info(s"\n\n\n\n\n\nFinished!!!!\n\n\n\n\n")
     true
   }
 
