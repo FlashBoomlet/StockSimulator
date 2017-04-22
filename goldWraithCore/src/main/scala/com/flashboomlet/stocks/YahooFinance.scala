@@ -131,8 +131,8 @@ class YahooFinance extends LazyLogging {
     val rtn = StockData(
       listing.key, // key
       listing.name, // company
-      listing.symbol, // symbol
-      listing.exchange, // exchange
+      listing.symbol.toLowerCase(), // symbol
+      listing.exchange.toLowerCase(), // exchange
       if(data(3)!="N/A" && data(4)!="N/A") du.dateandTimetoTime(data(3), data(4)) else -1,
       if(tmp.head!="N/A") tmp.head.toDouble else -1, // Last Trade
       if(tmp(1)!="N/A") tmp(1).toDouble else -1, // open

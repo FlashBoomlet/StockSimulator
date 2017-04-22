@@ -56,7 +56,7 @@ class ListingGatherer(implicit val db: MongoDatabaseDriver) extends LazyLogging 
         db.updateUSStockListing(
           StockListing(
             l._2,
-            l._1.symbol,
+            l._1.symbol.toLowerCase(),
             l._1.name,
             l._1.lastSale,
             l._1.marketCap,
@@ -64,7 +64,7 @@ class ListingGatherer(implicit val db: MongoDatabaseDriver) extends LazyLogging 
             l._1.sector,
             l._1.industry,
             l._1.summaryQuote,
-            l._1.exchange,
+            l._1.exchange.toLowerCase(),
             l._1.lastUpdate,
             l._1.lastDataFetch,
             l._1.valid
