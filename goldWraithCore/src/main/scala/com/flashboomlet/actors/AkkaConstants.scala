@@ -22,7 +22,7 @@ object AkkaConstants {
   val cur = du.getNowInMillis
   val desiredTime = du.formattedTimeToMillis(
     du.dateToYear(cur),
-    du.dateToMonth(cur),
+    du.dateToMonth(cur)-1,
     du.dateToDay(cur),
     4,
     30,
@@ -31,7 +31,7 @@ object AkkaConstants {
   )
 
   /** Initial delay for scheduling actors, in milliseconds */
-  private[this] val InitialMilliseconds = if(desiredTime-cur > 0){
+  private[this]  val InitialMilliseconds = if(desiredTime-cur > 0){
     desiredTime-cur
   } else 0
 
@@ -47,5 +47,5 @@ object AkkaConstants {
   val InitialDelay = FiniteDuration(InitialMilliseconds, MILLISECONDS)
 
   /** Finite duration for time between Yahoo Finance fetching */
-  val YahooFinanceTickLength = FiniteDuration(YahooFinanceSeconds, SECONDS)
+  val YahooFinanceTickLength = FiniteDuration(YahooFinanceSeconds, MILLISECONDS)
 }

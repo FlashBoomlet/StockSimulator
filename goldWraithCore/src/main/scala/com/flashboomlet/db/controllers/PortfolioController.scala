@@ -45,6 +45,62 @@ class PortfolioController
     Await.result(future, Duration.Inf)
   }
 
+  def getValidContractID(sale: PortfolioData): Long = {
+    getActiveInvestments(sale.uid).filter(i =>
+      i.contractType == sale.contractType && i.symbol == sale.symbol).filter(i =>
+      i.units >= sale.units).minBy(i => i.units).transactionId
+  }
+
+  def validUnitCount(sale: PortfolioData): Boolean = {
+    getActiveInvestments(sale.uid).filter(i =>
+      i.contractType == sale.contractType && i.symbol == sale.symbol).exists(i => i.units >= sale.units)
+  }
+
+  def validContract(id: Long): Boolean = {
+    getAllPortfolioData().filter(i => i.sellPrice < 0).exists(i => i.transactionId == id)
+  }
+
+  def getInvestment(uid: String, id: Long): PortfolioData = {
+    getPortfolioData(uid).filter(i => i.transactionId == id).head
+  }
+
+  def getAActiveInvestments(uid: String): List[(String, Int)] = {
+    // (Symbol, Units)
+    val investments = getPortfolioData(uid).filter(s => s.sellPrice < 0)
+    investments.groupBy(i => i.symbol).map( i =>
+      (
+      i._1,
+      i._2.map(sale => sale.units).sum
+      )
+    ).toList
+  }
+
+  def getActiveInvestments(uid: String): List[PortfolioData] = {
+    getPortfolioData(uid).filter(s => s.sellPrice < 0)
+  }
+
+  def getInvestmentOutcomes(uid: String): List[(Long, String, Double, String, Int)] = {
+    // (Transaction ID, Symbol, Profit*, contractType, units)
+    val outcomes = getPortfolioData(uid).filter(s => s.sellPrice > 0)
+    outcomes.map { s =>
+      val sale = s.sellPrice*s.units
+      val buy = s.purchasePrice*s.units
+      (
+        s.transactionId,
+        s.symbol,
+        if (s.contractType == "put") {
+          // Sell should be lower
+          buy - sale
+        } else {
+          // call: sale should be higher
+          sale-buy
+        },
+        s.contractType,
+        s.units
+      )
+    }
+  }
+
   /**
     * Inserts Portfolio data to the portfolioDataCollection
     *
@@ -143,12 +199,12 @@ class PortfolioController
 
 
   private def clearAllPrediction(): Unit = {
-    val future = predictionDataCollection.remove(BSONDocument())
+    val future = predictionDataCollection.drop(false)
     Await.result(future, Duration.Inf)
   }
 
   private def clearAllPortfolio(): Unit = {
-    val future = portfolioDataCollection.remove(BSONDocument())
+    val future = portfolioDataCollection.drop(false)
     Await.result(future, Duration.Inf)
   }
 

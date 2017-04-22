@@ -21,6 +21,8 @@ object ShellHelp {
     println("\n")
     getTradeUsage()
     println("\n")
+    getSellUsage()
+    println("\n")
     getGraphUsage()
     println("\n")
     getBankUsage()
@@ -33,7 +35,7 @@ object ShellHelp {
   def getMarketUsage(): Unit = {
     println("Request: market")
     println("\tGet various data on a market")
-    println("\tEx:\tstockShell:portfolio start=04/01/17 end=04/07/2017 option=ma\n\n")
+    println("\tEx:\tstockShell:portfolio start=04/01/17 end=04/07/2017 option=ma")
     println("Usage:")
     println("\tstart=[mm/dd/yyyy]")
     println("\tend=[mm/dd/yyyy] optional")
@@ -48,7 +50,7 @@ object ShellHelp {
   def getPortfolioUsage(): Unit = {
     println("Request: portfolio")
     println("\tGet users portfolio information")
-    println("\tEx:\tstockShell:portfolio uid=ttlynch\n\n")
+    println("\tEx:\tstockShell:portfolio uid=ttlynch")
     println("Usage:")
     println("\tuid=[user id]")
     println("getUserIDs")
@@ -59,7 +61,7 @@ object ShellHelp {
   def getQuoteUsage(): Unit = {
     println("Request: quote")
     println("\t Get information on a stock symbol")
-    println("\tEx:\tstockShell:quote market=nasdaq symbol=tsla\n\n")
+    println("\tEx:\tstockShell:quote market=nasdaq symbol=tsla")
     println("Usage:")
     println("\tmarket=[nyse/nasdaq]")
     println("\tsymbol=[quote]")
@@ -70,7 +72,7 @@ object ShellHelp {
   def getTradeUsage(): Unit  = {
     println("Option: trade")
     println("\tTrade a given stock based on the symbol")
-    println("\tEx:\tstockShell:trade uid=ttlynch market=nasdaq symbol=tsla units=1 contract=call action=buy\n\n")
+    println("\tEx:\tstockShell:trade uid=ttlynch market=nasdaq symbol=tsla units=1 contract=call action=buy")
     println("Usage:")
     println("\tuid=[user id]")
     println("\tmarket=[market]")
@@ -80,10 +82,19 @@ object ShellHelp {
     println("\taction=[action (buy/sell)]")
   }
 
+  def getSellUsage(): Unit  = {
+    println("Option: sell")
+    println("\tTrade a given stock based on the symbol")
+    println("\tEx:\tstockShell:sell uid=ttlynch transactionid=1")
+    println("Usage:")
+    println("\tuid=[user id]")
+    println("\ttransactionid=[transactionID]")
+  }
+
   def getGraphUsage(): Unit = {
     println("Option: graph")
     println("\tGraph a stock on a pop up graph")
-    println("\tEx:\tstockShell:graph symbol=tsla start=04/01/17 end=04/07/2017\n\n")
+    println("\tEx:\tstockShell:graph symbol=tsla start=04/01/17 end=04/07/2017")
     println("Usage:")
     println("\tsymbol=[symbol]")
     println("\tstart=[start date]")
@@ -95,7 +106,7 @@ object ShellHelp {
   def getBankUsage(): Unit = {
     println("Option: bank")
     println("\tBank is a function to interact with ones bank account")
-    println("\tEx:\tstockShell:bank uid=ttlynch deposit=100000.50 account=checking\n\n")
+    println("\tEx:\tstockShell:bank uid=ttlynch deposit=100000.50 account=checking")
     println("Usage:")
     println("\tuid=UserID")
     println("\tdeposit=[Amount to deposit] optional")
@@ -106,7 +117,7 @@ object ShellHelp {
   def getAccountUsage(): Unit = {
     println("Option: account")
     println("\tAccount is a function to create a bank account")
-    println("\tEx:\tstockShell:account uid=ttlynch first=tyler last=lynch\n\n")
+    println("\tEx:\tstockShell:account uid=ttlynch first=tyler last=lynch")
     println("Usage:")
     println("\tuid=UserID")
     println("\tfirst=[first name]")

@@ -52,4 +52,27 @@ class BankTeller {
     println(s"\tsaving: ${account.saving}")
   }
 
+  def transferFunds(uid: String, fromAccount: String, amount: Double): Unit = {
+    // For future implementation
+    if(bai.uidExist(uid)){
+      val trans = bai.transferFunds(uid, fromAccount, amount)
+      if(trans){
+      } else {
+        println(s"Sorry, you do not have sufficient funds in that account.")
+      }
+    } else {
+      println("Sorry, we could not find an account on file for you.")
+    }
+  }
+
+  def fundsPresent(uid: String, amount: Double): Boolean = {
+    // By Default we will only check checking accounts. Saving's funds must be transferred.
+    if(bai.uidExist(uid)){
+      // Could be true or false
+      bai.fundsPresent(uid, amount)
+    } else {
+      false
+    }
+  }
+
 }

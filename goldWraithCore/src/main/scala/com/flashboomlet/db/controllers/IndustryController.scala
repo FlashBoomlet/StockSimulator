@@ -496,43 +496,43 @@ class IndustryController
 
   def clearAllIndustries(): Unit = {
 
-    val one = basicIndustriesMainCollection.remove(BSONDocument())
+    val one = basicIndustriesMainCollection.drop(false)
     Await.result(one, Duration.Inf)
 
-    val two = capitalGoodsMainCollection.remove(BSONDocument())
+    val two = capitalGoodsMainCollection.drop(false)
     Await.result(two, Duration.Inf)
 
-    val three = consumerDurablesMainCollection.remove(BSONDocument())
+    val three = consumerDurablesMainCollection.drop(false)
     Await.result(three, Duration.Inf)
 
-    val four = consumerNonDurablesMainCollection.remove(BSONDocument())
+    val four = consumerNonDurablesMainCollection.drop(false)
     Await.result(four, Duration.Inf)
 
-    val five = consumerServicesMainCollection.remove(BSONDocument())
+    val five = consumerServicesMainCollection.drop(false)
     Await.result(five, Duration.Inf)
 
-    val six = energyMainCollection.remove(BSONDocument())
+    val six = energyMainCollection.drop(false)
     Await.result(six, Duration.Inf)
 
-    val seven = financeMainCollection.remove(BSONDocument())
+    val seven = financeMainCollection.drop(false)
     Await.result(seven, Duration.Inf)
 
-    val eight = healthCareMainCollection.remove(BSONDocument())
+    val eight = healthCareMainCollection.drop(false)
     Await.result(eight, Duration.Inf)
 
-    val nine = miscellaneousMainCollection.remove(BSONDocument())
+    val nine = miscellaneousMainCollection.drop(false)
     Await.result(nine, Duration.Inf)
 
-    val ten = otherMainCollection.remove(BSONDocument())
+    val ten = otherMainCollection.drop(false)
     Await.result(ten, Duration.Inf)
 
-    val eleven = publicUtilitiesMainCollection.remove(BSONDocument())
+    val eleven = publicUtilitiesMainCollection.drop(false)
     Await.result(eleven, Duration.Inf)
 
-    val twelve = technologyMainCollection.remove(BSONDocument())
+    val twelve = technologyMainCollection.drop(false)
     Await.result(twelve, Duration.Inf)
 
-    val thirteen = transportationMainCollection.remove(BSONDocument())
+    val thirteen = transportationMainCollection.drop(false)
     Await.result(thirteen, Duration.Inf)
   }
 

@@ -13,8 +13,20 @@ class Trade {
       println(s"Your sale for: $symbol has been made. ")
     } else if(trade == 2){
       println("Sorry, the market is not yet open.")
+    } else if(trade == 3){
+      println("Sorry, you don't have that many units available to sell")
     } else {
       println(s"Your sale for: $symbol has NOT been made.")
+    }
+  }
+
+
+  def sell(uid: String, transactionID: Long): Unit = {
+    if(Sell.validContract(transactionID)){
+      val trade = Sell.trade(uid, transactionID)
+      println(s"Your sale has been made. ")
+    } else {
+      println(s"Your sale has NOT been made.")
     }
   }
 

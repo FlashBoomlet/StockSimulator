@@ -57,22 +57,25 @@ object Driver  extends LazyLogging {
     // Have the ability to clear listings as seen applicable.
     // lg.clearListings()
     // industryController.clearAllIndustries()
-/*
-    lg.getListings
+
+    // lg.getListings
     val fetchIndustriesFinish = du.getNowInMillis
-    logger.info(s"It took: ${fetchIndustriesFinish-startOfSim} milliseconds to update historical data")
+    logger.info(s"It took: ${fetchIndustriesFinish-startOfSim} milliseconds to update listings")
     val reenableStart = du.getNowInMillis
     // re-enable all stocks are the beginning of the simulations to see if there is data available.
-    databaseDriver.getUSStockListings.foreach(s => sd.enableStock(s))
+
+    // databaseDriver.getUSStockListings.foreach(s => sd.enableStock(s))
+
     // Gather Historical Data
     val reenableFinish = du.getNowInMillis
     logger.info(s"It took: ${reenableFinish-fetchIndustriesFinish} milliseconds to re-enable all stocks")
     sd.gatherDataHistory()
     val historicalFinish = du.getNowInMillis
     logger.info(s"It took: ${historicalFinish-reenableFinish} milliseconds to update historical data")
-*/
+
     // Configure and start the scheduler
-    configureScheduler()
+    // Disabled due to conflicts on the insert. Need to figure out how to ensure uniqueness. (easily)
+    // configureScheduler()
   }
 
   def testInternet(site: String): Boolean = {

@@ -158,7 +158,7 @@ class MongoDatabaseDriver
   }
 
   def clearAllListings(): Unit = {
-    val future = usStockListingsCollection.remove(BSONDocument())
+    val future = usStockListingsCollection.drop(false)
     Await.result(future, Duration.Inf)
   }
 
