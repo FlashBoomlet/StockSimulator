@@ -12,8 +12,14 @@ class MarketInfo {
   val du = new DateUtil
 
   def getQuote(market: String, symbol: String): Unit = {
-    println(s"The Most Recent Data for $symbol in the $market market is :")
-    println(s"${mc.getStock(symbol)}")
+    val stock = mc.getStock(symbol)
+    println(s"\n$symbol at ${stock.time}:")
+    println(s"\tprice: ${stock.lastTrade}")
+    println(s"\task: ${stock.ask}\tbid: ${stock.bid}")
+    println(s"\trange: [${stock.dayLow}, ${stock.dayHigh}]")
+    println(s"\tvolume: ${stock.volume}")
+    println(s"\topen: ${stock.open}")
+    println(s"\texchange: ${stock.exchange}\n")
   }
 
   /**

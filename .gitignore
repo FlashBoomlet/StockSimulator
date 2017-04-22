@@ -22,3 +22,5 @@ goldWraithCore/src/main/java/
 goldWraithCore/src/main/resources/
 goldWraithCore/src/main/scala-2.11/
 goldWraithCore/src/test/
+/DownloadedContent/nasdq_listings.csv
+/DownloadedContent/nyse_listings.csv

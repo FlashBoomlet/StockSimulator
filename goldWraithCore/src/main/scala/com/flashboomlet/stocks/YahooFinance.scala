@@ -6,6 +6,10 @@ import com.flashboomlet.data.StockData
 import com.flashboomlet.data.StockListing
 import com.typesafe.scalalogging.LazyLogging
 import org.jfree.data.DataUtilities
+
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+import scala.io.Source
 import scala.util.Try
 import scalaj.http.Http
 import scalaj.http.HttpRequest
@@ -28,7 +32,7 @@ import scalaj.http.HttpRequest
 class YahooFinance extends LazyLogging {
 
   private val BaseApiPath: String = "http://download.finance.yahoo.com/d/quotes.csv?"
-  private val BaseApiPathHistory: String = "http://ichart.finance.yahoo.com/table.csv?"
+  private val BaseApiPathHistory: String = "https://ichart.finance.yahoo.com/table.csv?"
   val du = new DateUtil
 
   val company = "n"
@@ -86,22 +90,30 @@ class YahooFinance extends LazyLogging {
     val end = du.getNowInMillis
 
     Try {
-      val url = (BaseApiPathHistory + "s=" + quote
+      val url: String = (BaseApiPathHistory + "s=" + quote
       + s"&a=${du.dateToMonth(start)}&b=${du.dateToDay(start)}&c=${du.dateToYear(start)}" +
-      s"&d=${du.dateToMonth(end)}&e=${du.dateToDay(end)}&f=${du.dateToYear(end)}"
+      s"&d=${du.dateToMonth(end)}&e=${du.dateToDay(end)}&f=${du.dateToYear(end)}" +
+      "&ignore=.csv"
       )
-      val request: HttpRequest = Http(url)
-      val data = request.asString.body.toString.split("\n").toList.map { i =>
+      val request = Http(url).timeout(30000,30000).asString
+      val data = request.body.toString.split("\n").toList.map{ i =>
         i.split(",").toList
       }.drop(1)
+
+      // logger.info(s"${data}")
+
       // logger.info(s"URL: ${url}")
       // logger.info(s"Yahoo fetched quote for: $quote")
 
       // logger.info(s"\n\n${data}\n")
 
-      data.map( s =>
+      val rtn = data.map( s =>
         toStockDataHistory(s, listing)
       )
+
+      // rtn.foreach(i => logger.info(s"$i"))
+
+      rtn
     }.getOrElse(
       List(woops(quote))
     )
@@ -139,8 +151,8 @@ class YahooFinance extends LazyLogging {
   private def toStockDataHistory(data: List[String], listing: StockListing): StockData = {
     val now = du.getNowInMillis
     // (0)Date,(1)Open,(2)High,(3)Low,(4)Close,(5)Volume,(6)Adj Close
-    // logger.info(s"Date: ${du.dateandTimetoTime(data.head, "0:0:0 AM")}")
-    StockData(
+    // logger.info(s"Date: ${data}") // du.dateandTimeoTimeHistory(data.head, "4:0:0 PM")}")
+    val rtn = StockData(
       listing.key, // key
       listing.name, // company
       listing.symbol, // symbol
@@ -156,6 +168,8 @@ class YahooFinance extends LazyLogging {
       "yahoo", // source
       now // fetchDate
     )
+    // logger.info(s"Converted to Stock Data")
+    rtn
   }
 
   private def nullStockData: StockData = {

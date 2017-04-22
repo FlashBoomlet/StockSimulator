@@ -175,6 +175,24 @@ class Controls {
   }
 
   /**
+    * Option: sell
+    *   Trade a given stock based on the symbol
+    *   Ex:\tstockShell:sell transactionid=1
+    * Usage:
+    *   uid=[user id]
+    *   transactionid=[transactionID]
+    */
+  def sell(options: Array[String]): Unit = {
+    if(options.head == "help"){
+      ShellHelp.getTradeUsage()
+    }
+    val uid = options.filter(p => p.toLowerCase().contains("uid")).head.split("=").last
+    val transactionid = options.filter(p => p.toLowerCase().contains("transactionid")).head.split("=").last.toLong
+
+    trader.sell(uid, transactionid)
+  }
+
+  /**
     * Graph Stock will graph a stock
     *
     * Usage:

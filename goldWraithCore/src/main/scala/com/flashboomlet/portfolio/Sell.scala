@@ -1,5 +1,6 @@
 package com.flashboomlet.portfolio
 
+import com.flashboomlet.controls.BankTeller
 import com.flashboomlet.data.DateUtil
 import com.flashboomlet.data.PortfolioData
 import com.flashboomlet.db.controllers.MarketController
@@ -13,6 +14,7 @@ object Sell {
   val pc = new PortfolioController
   val mc = new MarketController
   val du = new DateUtil
+  val bac = new BankTeller
 
 
   // contract=[type of contract (put/call)]
@@ -37,11 +39,46 @@ object Sell {
     sell(sale)
   }
 
+  def trade(uid: String, transactionID: Long): Int = {
+    // Magic to figure out contract end date.
+    val data = pc.getInvestment(uid, transactionID)
+    val contract = pc.getInvestment(uid, transactionID)
+    val currentStock = mc.getStock(contract.symbol)
+    val sale = PortfolioData(
+      contract.uid,
+      contract.transactionId,
+      contract.market,
+      contract.symbol,
+      contract.units,
+      contract.purchaseDate,
+      currentStock.lastTrade,
+      du.getNowInMillis,
+      contract.sellPrice,
+      contract.contractType,
+      contract.contractEndDate
+    )
+    sell(sale)
+  }
+
   private def sell(sale: PortfolioData): Int = {
+    val cost = sale.sellPrice * sale.units
     if(marketOpen(sale.market)){
-      submitSale(sale)
-      1
+      if(validUnitCount(sale)) {
+        bac.bankTeller(sale.uid, cost, 0, "checking")
+        submitSale(sale)
+        1
+      } else {
+        3
+      }
     } else 2
+  }
+
+  def validUnitCount(sale: PortfolioData): Boolean = {
+    pc.validUnitCount(sale)
+  }
+
+  def validContract(id: Long): Boolean = {
+    pc.validContract(id)
   }
 
   private def submitSale(sale: PortfolioData): Unit = {

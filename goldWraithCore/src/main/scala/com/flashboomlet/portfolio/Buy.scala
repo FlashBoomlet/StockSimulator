@@ -1,5 +1,6 @@
 package com.flashboomlet.portfolio
 
+import com.flashboomlet.controls.BankTeller
 import com.flashboomlet.data.DateUtil
 import com.flashboomlet.data.PortfolioData
 import com.flashboomlet.db.controllers.MarketController
@@ -13,6 +14,7 @@ object Buy {
   val pc = new PortfolioController
   val mc = new MarketController
   val du = new DateUtil
+  val bac = new BankTeller
 
   // contract=[type of contract (put/call)]
 
@@ -37,7 +39,9 @@ object Buy {
   }
 
   private def buy(purchase: PortfolioData): Int = {
-    if(marketOpen(purchase.market)){
+    val cost = purchase.purchasePrice * purchase.units
+    if(marketOpen(purchase.market) && bac.fundsPresent(purchase.uid, cost)){
+      bac.bankTeller(purchase.uid, 0, cost, "checking")
       submitPurchase(purchase)
       1
     } else 2
@@ -62,6 +66,10 @@ object Buy {
 
       true
     } else false
+  }
+
+  def fundsPresent(): Boolean = {
+    false
   }
 
 }

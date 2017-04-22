@@ -46,4 +46,3 @@ lazy val goldWraithCore = (project in file("goldWraithCore"))
   name := "goldWraithCore",
   version := "0.1.0",
   javaOptions += "-Dlogback.configurationFile=../goldWraithCore/src/main/resources/logback.xml")
-

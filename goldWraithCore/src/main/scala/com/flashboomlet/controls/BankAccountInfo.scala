@@ -142,4 +142,32 @@ class BankAccountInfo {
   def uidExist(uid: String): Boolean = {
     bac.uidExist(uid)
   }
+
+  def fundsPresent(uid: String, amount: Double): Boolean = {
+    // By Default we will only check checking accounts. Saving's funds must be transferred.
+    val ba = bac.getBankAccount(uid)
+    if(ba.checking-amount >= 0.0) true
+    else false
+  }
+
+  def transferFunds(uid: String, fromAccount: String, amount: Double): Boolean = {
+    if(fromAccount == "checking") {
+      if(fundsPresent(uid, amount)) {
+        withdraw(uid, amount, "checking")
+        deposit(uid, amount, "saving")
+        true
+      } else {
+        false
+      }
+    } else {
+      val ba = bac.getBankAccount(uid)
+      if(ba.saving-amount >= 0.0) {
+        withdraw(uid, amount, "saving")
+        deposit(uid, amount, "checking")
+        true
+      } else {
+        false
+      }
+    }
+  }
 }

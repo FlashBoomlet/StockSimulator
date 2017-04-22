@@ -11,6 +11,20 @@ import com.typesafe.scalalogging.LazyLogging
 
 /**
   * Created by ttlynch on 2/12/17.
+  *
+  * Trading hours 9:30am-4pm EST
+  *   6.5 Hours, 390 Minutes, 23400 seconds
+  * @500 kb per historical reference w/ 5000 symbols = 2.5 GB. (Max)
+  * @250 kb per historical reference w/ 5000 symbols = 1.25 GB. (Avg.)
+  * @100 kb per historical reference w/ 5000 symbols = 0.5 GB. (Realistic)
+  *
+  * Per Cycle of Object Fetches w/ 5000 symbols
+  * w/ Yahoo @100 Bytes each = 500 kb = 0.5 mb = 0.0005 gb
+  *   @ seconds=11.7 gb @ Minutes=0.195 gb per day
+  *   @ seconds=362.7 gb @ Minutes=6.045 gb per month
+  * w/ WSJ @130 kB each  500 kb = 650 mb = 0.65 gb
+  *   @ seconds=15,210 gb @ Minutes=253.5 gb per day
+  *   @ seconds=471,510 gb @ Minutes=7858.5 gb per month
   */
 class StockDataGatherer(
   implicit val ic: IndustryController,
@@ -40,6 +54,8 @@ class StockDataGatherer(
         disableStock(s)
       }
     }
+
+    // logger.info(s"\n\n\n\n\n\nFinished!!!!\n\n\n\n\n")
   }
 
 
@@ -48,7 +64,7 @@ class StockDataGatherer(
     */
   def gatherDataHistory(): Boolean = {
     // Get list of stock listings
-    val stocks = db.getUSStockListings.filter(sl => sl.valid).take(1)
+    val stocks = db.getUSStockListings.filter(sl => sl.valid)
     // Iterate through the stock listings, get updated data and insert
     stocks.foreach { s =>
       val lastUpdated = s.lastDataFetch
@@ -66,7 +82,8 @@ class StockDataGatherer(
         }
       }
     }
-   true
+    logger.info(s"\n\n\n\n\n\nFinished!!!!\n\n\n\n\n")
+    true
   }
 
   def enableStock(s: StockListing): Unit = {
@@ -92,6 +109,7 @@ class StockDataGatherer(
 
 
   private def disableStock(s: StockListing): Unit = {
+    logger.info(s"Error Collecting historical data for: ${s.symbol}")
     db.updateUSStockListing(
       StockListing(
         s.key,
