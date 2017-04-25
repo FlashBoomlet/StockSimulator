@@ -16,18 +16,20 @@ class PortfolioInfo {
   def getInformation(uid: String): String = {
 
     if(uidValid(uid)){
+      val active = pc.getActiveInvestments(uid).map( d =>
+        "\t\t" + d.symbol + ": " + d.contractType + " for " + d.units + " shares: "
+        + d.purchasePrice*d.units + " USD (" + d.transactionId + ")\n"
+      ).mkString("")
+      val results = pc.getInvestmentOutcomes(uid).map( d =>
+        "\t\t" + d._2 + ": " + d._4 + " for " + d._5 + " shares: " + d._3 + " USD\n"
+      ).mkString("")
       (
         "\nPortfolio Data for " + uid + ":\n"
         + "\n\tActive Trades\n"
-        + pc.getActiveInvestments(uid).foreach{ d =>
-          ("\t\t" + d.symbol + ": " + d.contractType+ " for " +d.units + " shares: "
-          + d.purchasePrice*d.units + " USD (" + d.transactionId + ")\n")
-        }
+        + active
         + "\n\tOutcomes\n"
         // (Transaction ID, Symbol, Profit*, contractType, units)
-        + pc.getInvestmentOutcomes(uid).foreach{ d =>
-         "\t\t" + d._2 + ": " + d._4 + " for " + d._5 + " shares: " + d._3 + " USD\n"
-        }
+        + results
       )
     } else {
       "\nThe user ID that you entered is wrong.\n\n"

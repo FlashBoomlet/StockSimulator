@@ -76,12 +76,13 @@ class PortfolioController
   }
 
   def getActiveInvestments(uid: String): List[PortfolioData] = {
-    getPortfolioData(uid).filter(s => s.sellPrice < 0)
+    val rtn  = getPortfolioData(uid).filter(s => s.sellPrice == -1)
+    rtn
   }
 
   def getInvestmentOutcomes(uid: String): List[(Long, String, Double, String, Int)] = {
     // (Transaction ID, Symbol, Profit*, contractType, units)
-    val outcomes = getPortfolioData(uid).filter(s => s.sellPrice > 0)
+    val outcomes = getPortfolioData(uid).filter(s => s.sellPrice != -1)
     outcomes.map { s =>
       val sale = s.sellPrice*s.units
       val buy = s.purchasePrice*s.units
@@ -117,7 +118,7 @@ class PortfolioController
     */
   def updatePortfolioData(pd: PortfolioData): Unit = {
     val selector = BSONDocument(
-      PortfolioDataConstants.Symbol -> BSONLong(pd.transactionId)
+      PortfolioDataConstants.TransactionId -> BSONLong(pd.transactionId)
     )
     portfolioDataCollection.findAndUpdate(selector, pd).onComplete {
       case Success(result) => // Do Nothing, we win

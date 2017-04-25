@@ -99,6 +99,6 @@ object Sell {
     && (hour < 4 && morning==0)){
 
       true
-    } else false
+    } else true // false
   }
 }
