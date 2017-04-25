@@ -99,7 +99,7 @@ class MarketController
     * Insert Data is a utility to aid in inserting stock data into the right collection
     *
     */
-  private def getData(
+  def getData(
     sector: String,
     startTime: Long,
     endTime: Long,

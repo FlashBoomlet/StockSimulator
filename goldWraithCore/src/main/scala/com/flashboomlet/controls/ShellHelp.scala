@@ -106,7 +106,7 @@ object ShellHelp {
     (
     "Option: graph\n"
     + "\tGraph a stock on a pop up graph\n"
-    + "\tEx:\tstockShell:graph symbol=air start=04/01/17 end=04/07/2017\n"
+    + "\tEx:\tstockShell:graph symbol=f start=1483254000000 end=1493142613028\n"
     + "Usage:\n"
     + "\tsymbol=[symbol]\n"
     + "\tstart=[start date]\n"
