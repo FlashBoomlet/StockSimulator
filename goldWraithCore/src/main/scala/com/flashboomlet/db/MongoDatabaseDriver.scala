@@ -7,6 +7,7 @@ import com.flashboomlet.db.controllers.MarketController
 import com.flashboomlet.db.controllers.PortfolioController
 import com.flashboomlet.db.implicits.MongoImplicits
 import com.typesafe.scalalogging.LazyLogging
+import reactivemongo.api.BSONSerializationPack
 import reactivemongo.api.BSONSerializationPack.Writer
 import reactivemongo.api.DefaultDB
 import reactivemongo.api.FailoverStrategy
@@ -207,12 +208,25 @@ class MongoDatabaseDriver
     * @return The  [[BSONObjectID]] associated with the newly created document
     */
   def insert[T](document: T, coll: BSONCollection)(implicit writer: Writer[T]): Unit = {
-    val futureRes = coll.insert(document)
-    val res = Await.result(futureRes, Duration.Inf)
-    res.errmsg match {
-      case Some(m) => logger.error(s"Failed to insert and create new id into $coll")
-      case _ => // logging needed we won
-    }
+    if(!exists(document, coll)) {
+      val futureRes = coll.insert(document)
+      val res = Await.result(futureRes, Duration.Inf)
+      res.errmsg match {
+        case Some(m) => logger.error(s"Failed to insert and create new id into $coll for $document")
+        case _ => // logging needed we won
+      }
+    } else logger.error(s"$document already exists in $coll")
+  }
+
+  // (implicit reader: Reader[T])
+  def exists[T](document: T, coll: BSONCollection)(implicit writer: Writer[T]): Boolean = {
+    val future =  coll
+    .find(document)
+    .cursor[BSONDocument]()
+    .collect[List]()
+    .map(list => list.nonEmpty)
+
+    Await.result(future, Duration.Inf)
   }
 
   def clearAll(): Unit = {

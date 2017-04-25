@@ -79,7 +79,6 @@ object Driver  extends LazyLogging {
     logger.info(s"It took: ${historicalFinish-reenableFinish} milliseconds to update historical data")
 
     // Configure and start the scheduler
-    // Disabled due to conflicts on the insert. Need to figure out how to ensure uniqueness. (easily)
     // configureScheduler()
   }
 
